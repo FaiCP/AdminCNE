@@ -1,0 +1,25 @@
+.mat-form-field{
+  align-items: center;
+}
+.mat-form-field input{
+  width: 300px;
+}
+.mat-label{
+  color: beige;
+}
+.full-width {
+  width: 100%;
+}
+
+.mensaje-no-existe-resultados {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  color: #666;
+}
+
+.mat-paginator {
+  margin-top: 1rem;
+}
+

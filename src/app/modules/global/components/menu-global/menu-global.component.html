@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+  <button routerLink="/" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-icon>home</mat-icon>
+  </button>
+  <span>TICS</span>
+  
+  <span *ngIf="userName" class="example-spacer" ></span>
+  <small>{{ userName }}</small>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="User menu">
+    <mat-icon>person</mat-icon>
+  </button>
+  
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="login/index">
+      <mat-icon>input</mat-icon>
+      <span>Iniciar sesión</span>
+    </button>
+    <button mat-menu-item (click)="onLogout()">
+      <mat-icon>logoutn</mat-icon>
+      <span>Cerrar sesriòn</span>
+    </button>
+    
+  </mat-menu>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

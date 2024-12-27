@@ -1,0 +1,149 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <div class="container-fluid">
+      <div class="row w-100 d-flex justify-content-between align-items-center">
+        <!-- Botón Crear -->
+        <div class="col-3 d-flex justify-content-start">
+          <button mat-raised-button color="primary" (click)="openDialog('0ms', '0ms')">
+            <mat-icon>add</mat-icon>
+            Crear
+          </button>
+        </div>
+
+        <!-- Buscador -->
+        <div class="col-6 d-flex justify-content-center">
+          <mat-form-field class="w-100">
+            <mat-label>Filtrar</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Busqueda" #input>
+          </mat-form-field>
+        </div>
+
+        <!-- Botón Generar Acta -->
+        <div class="col-3 d-flex justify-content-end">
+          <button mat-raised-button color="primary" (click)="enviarActa()">
+            Generar Acta
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<!-- Separador -->
+<div class="spacing"></div>
+
+<mat-toolbar>
+  <mat-toolbar-row>
+    <div class="toolbar-container">
+      <!-- Select Custodio -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Custodio</mat-label>
+        <mat-select
+          [(ngModel)]="prestamo.id_custodio"
+          (selectionChange)="onCustodioChange($event.value)"
+          name="Custodios"
+          required
+        >
+          <mat-option *ngFor="let custodio of custodios" [value]="custodio.id">
+            {{ custodio.nombre_empleado }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Select Departamento -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Departamento</mat-label>
+        <mat-select
+          [(ngModel)]="prestamo.id_departamento"
+          name="Departamentos"
+          required
+        >
+          <mat-option *ngFor="let departamento of departamentos" [value]="departamento.id">
+            {{ departamento.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="spacingTable"></div> 
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  
+          <ng-container matColumnDef="Nº">
+            <th mat-header-cell *matHeaderCellDef> N° </th>
+            <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
+          </ng-container>    
+  
+          <ng-container matColumnDef="CÓDIGO_ACTUAL">
+            <th mat-header-cell *matHeaderCellDef> CÓDIGO ACTIVO </th>
+            <td mat-cell  *matCellDef="let element"> {{element.id_equipo}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="nombre_dispositivo">
+            <th mat-header-cell *matHeaderCellDef> DISPOSITIVO </th>
+            <td mat-cell *matCellDef="let element">{{ element.nombre_dispositivo }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="SERIE">
+            <th mat-header-cell *matHeaderCellDef> SERIE </th>
+            <td mat-cell *matCellDef="let element">{{ element.codigo_cne }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="MODELO">
+            <th mat-header-cell *matHeaderCellDef> MODELO </th>
+            <td mat-cell *matCellDef="let element">{{ element.hardware.modelo }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="MARCA">
+            <th mat-header-cell *matHeaderCellDef> MARCA </th>
+            <td mat-cell *matCellDef="let element"> {{element.hardware.marca}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="fecha_asignacion">
+            <th mat-header-cell *matHeaderCellDef> FECHA DE ASIGANCION </th>
+            <td mat-cell *matCellDef="let element"> {{element.fecha_asignacion | date:'yyyy-MM-dd'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="fecha_devolucion">
+            <th mat-header-cell *matHeaderCellDef> FECHA DE DEVOLUCION </th>
+            <td mat-cell *matCellDef="let element"> {{element.fecha_devolucion | date:'yyyy-MM-dd'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="VALOR">
+            <th mat-header-cell *matHeaderCellDef> VALOR</th>
+            <td mat-cell *matCellDef="let element"> {{element.hardware.valor }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ESTADO">
+            <th mat-header-cell *matHeaderCellDef> ESTADO </th>
+            <td mat-cell *matCellDef="let element"> {{element.hardware.estado}} </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td [attr.colspan]="displayedColumns.length" class="mat-cell">
+              <div class="mesnaje-no-existe-resultados">
+                <mat-icon class="max2">error</mat-icon> No existe elementos para mostrar
+              </div>
+            </td>
+          </tr>
+        </table>
+  
+        <mat-paginator
+          [length]="cantidadTotal"
+          [pageSize]="CantidadPagina"
+          [pageSizeOptions]="tamanioPaginaOptions"
+          [pageIndex]="numerPagina"
+          showFirstLastButtons="true"
+          (page)="cambiarPagina($event)">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+  

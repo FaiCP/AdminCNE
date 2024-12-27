@@ -1,0 +1,12 @@
+<div class="app-panel-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2 p-2 "*ngFor="let menu of item">        
+        <mat-card *ngIf="authService.isAuthenticated()" [routerLink]="menu.link">
+          <mat-icon *ngIf="authService.isAuthenticated()">{{ menu.icon }}</mat-icon>
+          <p *ngIf="authService.isAuthenticated()">{{ menu.label }}</p>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

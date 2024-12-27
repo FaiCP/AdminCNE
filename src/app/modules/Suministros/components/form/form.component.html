@@ -1,0 +1,59 @@
+<form (ngSubmit)="onRegister()" #myForm="ngForm">
+  <div class="Form-egreso">
+    <div mat-dialog-actions>
+      Crear Nuevo Suministro
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="mat-field">
+              <mat-label>Seleccione Equipo</mat-label>
+              <input
+                matInput
+                placeholder="Buscar equipo"
+                (input)="filtrarOpciones($event, 'primero')"
+              />
+              <mat-select [(value)]="Suministro.id_equipo">
+                <mat-option
+                  *ngFor="let equipo of opcionesFiltradas1"
+                  [value]="equipo.id_equipo"
+                >
+                  {{ equipo.nombre_dispositivo }} ({{ equipo.id_equipo }})
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill">
+              <mat-label>TIPO DE SUMINISTRO</mat-label>
+              <input matInput type="text" [(ngModel)]="Suministro.tipo_suministro" name="TIPO" placeholder="TIPO">
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field appearance="fill" class="mat-field">
+              <mat-label>Seleccione otro Equipo</mat-label>
+              <input
+                matInput
+                placeholder="Buscar equipo"
+                (input)="filtrarOpciones($event, 'segundo')"
+              />
+              <mat-select [(value)]="Suministro.id_equipoAsignado">
+                <mat-option
+                  *ngFor="let equipo of opcionesFiltradas2"
+                  [value]="equipo.id_equipo"
+                >
+                  {{ equipo.nombre_dispositivo }} ({{ equipo.id_equipo }})
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" style="text-align: center;">
+            <button mat-button mat-dialog-close type="button">Cerrar</button>
+            <button mat-button mat-dialog-close cdkFocusInitial type="submit">Crear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

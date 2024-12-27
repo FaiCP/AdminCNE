@@ -1,0 +1,29 @@
+<mat-card class="card alt" [class.active]="isRegistering">
+    <div class="toggle" (click)="toggleRegister()">
+      <i class="fa fa-pencil"></i>
+    </div>
+    <h1 class="title">Register</h1>
+    <form (submit)="register()">
+      <div class="input-container">
+        <mat-form-field appearance="fill">
+          <mat-label>Username</mat-label>
+          <input matInput required>
+        </mat-form-field>
+      </div>
+      <div class="input-container">
+        <mat-form-field appearance="fill">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" required>
+        </mat-form-field>
+      </div>
+      <div class="input-container">
+        <mat-form-field appearance="fill">
+          <mat-label>Repeat Password</mat-label>
+          <input matInput type="password" required>
+        </mat-form-field>
+      </div>
+      <div class="button-container">
+        <button mat-raised-button color="primary">Next</button>
+      </div>
+    </form>
+  </mat-card>

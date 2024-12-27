@@ -1,0 +1,102 @@
+<mat-toolbar>
+  <div class="container-fluid">
+    <div class="row w-100 d-flex justify-content-between align-items-center">
+      <div class="col-3 d-flex justify-content-start">
+        <button mat-raised-button color="primary" (click)="openDialog('0ms', '0ms')">
+          <mat-icon>add</mat-icon>
+          Crear
+        </button>
+      </div>
+
+      <div class="col-6 d-flex justify-content-center">
+        <mat-form-field class="w-100">
+          <mat-label>Filtrar</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Busqueda" #input>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>
+
+  <br>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="id_equipo">
+          <th mat-header-cell *matHeaderCellDef> Serie </th>
+          <td mat-cell *matCellDef="let element"> {{element.id_equipo}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipo_suministro">
+          <th disable mat-header-cell *matHeaderCellDef> Tipo de Suministro </th>
+          <td mat-cell *matCellDef="let element"> {{element.tipo_suministro}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha_retiro">
+          <th mat-header-cell *matHeaderCellDef> Fecha de Retiro </th>
+          <td mat-cell *matCellDef="let element"> {{element.fecha_retiro| date:'yyyy-MM-dd'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="id_equipoAsignado">
+          <th mat-header-cell *matHeaderCellDef> Equipo asignado </th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="editandoElementoId === element.id; else showequipoAsignado">
+              <input matInput [(ngModel)]="elementoEditado.id_equipoAsignado" placeholder="EquipoAsignado">
+            </ng-container>
+            <ng-template #showequipoAsignado>{{ element.id_equipoAsignado }}</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef> Aciones </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-fab color="primary" aria-label=" icon button with a delete icon"
+            class="btn btn-primary btn-block" (click)="eliminar(element.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="editar">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="editandoElementoId === element.id; else editButton">
+              <button mat-icon-button color="primary" (click)="guardarEdicion()">
+                <mat-icon>check</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="cancelarEdicion()">
+                <mat-icon>close</mat-icon>
+              </button>
+            </ng-container>
+            <ng-template #editButton>
+              <button mat-fab color="accent" aria-label="Edit icon button"
+                      (click)="iniciarEdicion(element)" class="btn btn-primary btn-block">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td [attr.colspan]="displayedColumns.length" class="mat-cell">
+            <div class="mesnaje-no-existe-resultados">
+              <mat-icon class="max2">error</mat-icon> No existe elementos para mostrar
+            </div>
+          </td>
+        </tr>
+      </table>
+      <mat-paginator
+        [length]="cantidadTotal"
+        pageSize="CantidadPagina"
+        [pageSizeOptions]="tamanioPaginaOptions"
+        [pageIndex]="numerPagina"
+        showFirstLastButtons="true"
+        (page)="cambiarPagina($event)">
+      </mat-paginator>
+    </div>
+  </div>
+</div>

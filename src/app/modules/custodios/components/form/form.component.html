@@ -1,0 +1,54 @@
+<form (ngSubmit)="onRegister()" #myForm="ngForm">
+    <div class="From-egreso">
+      <div mat-dialog-actions>
+        Crear Nuevo Custodio
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Nombre</mat-label>
+                <input matInput type="text" [(ngModel)]="Cutodios.nombre" name="nombre_empleado" placeholder="Nombre del custodio">
+              </mat-form-field>            
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Cargo</mat-label>
+                <input matInput type="text" [(ngModel)]="Cutodios.cargo" name="cargo_empleado" placeholder="Cargo del custodio">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Cedula</mat-label>
+                <input matInput type="text" [(ngModel)]="Cutodios.cedula" name="cedula_empleado" placeholder="Cedula del custodio" >
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Departamento</mat-label>
+                <mat-select
+                  [(ngModel)]="Cutodios.id_departamento"
+                  (selectionChange)="onCustodioChange($event.value)"
+                  name="Departamentos"
+                  required
+                >
+                  <mat-option *ngFor="let departamento of departamentos" [value]="departamento.id">
+                    {{ departamento.nombre }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="row">
+            <div class="col" style="text-align: center;">
+              <button mat-button mat-dialog-close type="button">Cerrar</button>
+              <button mat-button mat-dialog-close cdkFocusInitial type="submit">Crear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  
