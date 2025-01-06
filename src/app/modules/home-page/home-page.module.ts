@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IndexComponent } from './components/index/index.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
@@ -21,53 +21,44 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 
-@NgModule({
-  declarations: [
-    IndexComponent,
-
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    HttpClientModule,
-    ToastrModule.forRoot({
-      closeButton:true,
-      disableTimeOut:true,
-      enableHtml:true,
-      progressBar:true,
-      onActivateTick:true,
-}),
-
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatInputModule,
-
-  ],
-  exports: [
-    ToastrModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    HttpClientModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatInputModule,
-    FormsModule
-  ]
-})
+@NgModule({ declarations: [
+        IndexComponent,
+    ],
+    exports: [
+        ToastrModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        HttpClientModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatInputModule,
+        FormsModule
+    ], imports: [CommonModule,
+        FormsModule,
+        RouterModule,
+        ToastrModule.forRoot({
+            closeButton: true,
+            disableTimeOut: true,
+            enableHtml: true,
+            progressBar: true,
+            onActivateTick: true,
+        }),
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatInputModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 
 export class HomePageModule { }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IndexComponent } from './components/index/index.component';
 import { MenuGlobalComponent } from './components/menu-global/menu-global.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
@@ -31,67 +31,60 @@ import { ToastrModule } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
 
 
-@NgModule({
-  declarations: [
-    IndexComponent,
-    MenuGlobalComponent
-  ],
-  imports: [
-    CommonModule,
-    MatMenuModule,
-    ReactiveFormsModule,
-    FormsModule,
-    RouterModule,
-    HttpClientModule,
-    ToastrModule.forRoot({
-      closeButton:true,
-      disableTimeOut:true,
-      enableHtml:true,
-      progressBar:true,
-      onActivateTick:true,
-}),
-
-    MatAutocompleteModule,
-    MatToolbarModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatProgressBarModule,
-    MatTabsModule,
-  ],
-  exports: [
-    MenuGlobalComponent,
-    ToastrModule,
-    MatDatepickerModule,
-    MatAutocompleteModule,
-    MatToolbarModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    HttpClientModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatInputModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatNativeDateModule,
-    MatProgressBarModule,
-    MatTabsModule,
-  ]
-})
+@NgModule({ declarations: [
+        IndexComponent,
+        MenuGlobalComponent
+    ],
+    exports: [
+        MenuGlobalComponent,
+        ToastrModule,
+        MatDatepickerModule,
+        MatAutocompleteModule,
+        MatToolbarModule,
+        MatCheckboxModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        HttpClientModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatInputModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatNativeDateModule,
+        MatProgressBarModule,
+        MatTabsModule,
+    ], imports: [CommonModule,
+        MatMenuModule,
+        ReactiveFormsModule,
+        FormsModule,
+        RouterModule,
+        ToastrModule.forRoot({
+            closeButton: true,
+            disableTimeOut: true,
+            enableHtml: true,
+            progressBar: true,
+            onActivateTick: true,
+        }),
+        MatAutocompleteModule,
+        MatToolbarModule,
+        MatCheckboxModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatProgressBarModule,
+        MatTabsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class GlobalModule { }
