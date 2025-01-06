@@ -32,12 +32,15 @@ export class FormComponent implements OnInit {
   };
 
   dataSource = new MatTableDataSource<any>([]); 
+  dataSource1 = new MatTableDataSource<any>([]);
   tamanioPaginaOptions: number[]=[1,5];
   filterText: string = ''; 
+  cantidadTotalE = 0;
   cantidadTotal = 0;
   CantidadPagina = 5;
   numerPagina = 0;
 
+  displayedColumns1: string[] = [];
   displayedColumns: string[] = [];
   selectedItems: any[] = [];
   selecteIds: number[] = [];
@@ -58,9 +61,11 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
     this.displayedColumns = ['nombre_dispositivo','haedware.marca','haedware.modelo',
       'haedware.codigo_cne', 'id_equipo','select'];
+    this.displayedColumns1 = ['numero','INSUMO','MODELO','MARCA', 'SERIE','ESTADO', 'CANTIDAD','OBSERVACION','select'];
     this.ObtenerDepartamentos();
     this.ObtenerHardwares();
     this.ObtenerCustodios();
+    this.ObtenerKits();
   }
 
   ObtenerCustodios() {
@@ -81,8 +86,7 @@ export class FormComponent implements OnInit {
     }
   }
 
-  ObtenerDepartamentos() {
-    
+  ObtenerDepartamentos() {   
     this.HttpService.LeerTodo(50, this.numerPagina, this.textBusqueda, 'departamentos')
       .subscribe((resOK: any) => {
         this.departamentos = resOK.datos.elementos;
@@ -92,8 +96,19 @@ export class FormComponent implements OnInit {
       });
   }
 
+  ObtenerKits() {
+    this.HttpService.LeerTodo(this.CantidadPagina, this.numerPagina, this.textBusqueda, 'Kits/LeerTodo')
+      .subscribe((resOK: any) => {
+        this.dataSource1.data = resOK.datos.elementos;
+        this.cantidadTotalE = resOK.datos.cantidadTotal;
+        console.log(resOK)
+      },
+      (respuestErr: any) => {
+        this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
+      });
+  }
+
   ObtenerHardwares() {
-    
     this.HttpService.LeerTodo(this.CantidadPagina, this.numerPagina, this.textBusqueda, 'Hardware/LeerTodo')
       .subscribe((resOK: any) => {
         this.dataSource.data = resOK.datos.elementos;

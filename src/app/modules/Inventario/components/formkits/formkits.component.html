@@ -1,0 +1,79 @@
+<form (ngSubmit)="onRegister()" #myForm="ngForm">
+    <div class="From-egreso">
+      <div mat-dialog-actions>
+        Crear Nuevo Ingreso
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Tipo de dispositivo</mat-label>
+                <input matInput type="text" [(ngModel)]="kits.INSUMO" name="nombre_dispositivo" placeholder="Tipo de dispositivo">
+              </mat-form-field>            
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Serie</mat-label>
+                <input matInput type="text" [(ngModel)]="kits.Serie" name="Serie" placeholder="Serie del dispositivo">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Modelo</mat-label>
+                <input matInput type="text" [(ngModel)]="kits.MODELO" name="Modelo" placeholder="Modelo">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Marca</mat-label>
+                <input matInput type="text" [(ngModel)]="kits.MARCA" name="marca" placeholder="marca">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field appearance="fill">
+                <mat-label>Nº Caja</mat-label>
+                <input matInput type="text" [(ngModel)]="kits.CANTIDAD" name="Nº Caja" placeholder="Nº Caja">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field appearance="fill">
+                <mat-label>Estado</mat-label>
+                <mat-select [(ngModel)]="kits.ESTADO" name="estado">
+                  <mat-option value="BUENO">BUENO</mat-option>
+                  <mat-option value="REGULAR">REGULAR</mat-option>
+                  <mat-option value="MALO">MALO</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field appearance="fill">
+                      <mat-label>ID</mat-label>
+                      <input matInput type="text" [(ngModel)]="kits.id" name="id" placeholder="ID">
+                    </mat-form-field>
+                  </div>
+                  <div class="col">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Observacion</mat-label>
+                      <textarea matInput [(ngModel)]="kits.OBSERVACION" name="descripcion" placeholder="descripcion"></textarea>
+                    </mat-form-field>
+                  </div>
+            </div>
+            
+          </div>      
+  
+          <div class="row">
+            <div class="col" style="text-align: center;">
+              <button mat-button mat-dialog-close type="button">Cerrar</button>
+              <button mat-button mat-dialog-close cdkFocusInitial type="submit">Crear</button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </form>
+  

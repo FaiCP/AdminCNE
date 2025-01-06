@@ -1,3 +1,5 @@
+<mat-tab-group>
+  <mat-tab label="Invetnario"> 
 <form (ngSubmit)="onRegister()" #myForm="ngForm">
   <div class="From-egreso">
     <div mat-dialog-actions>
@@ -119,3 +121,149 @@
     </div>
   </div>
 </form>
+</mat-tab>
+<mat-tab label="Kits">
+  <form (ngSubmit)="onRegister()" #myForm="ngForm">
+    <div class="From-egreso">
+      <div mat-dialog-actions>
+        <h3>Crear Nuevo Préstamo</h3>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Lugar</mat-label>
+                <mat-select
+                  [(ngModel)]="prestamo.id_custodio"
+                  (selectionChange)="onCustodioChange($event.value)"
+                  name="Custodios"
+                  required
+                >
+                  <mat-option *ngFor="let custodio of custodios" [value]="custodio.id">
+                    {{ custodio.nombre_empleado }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Departamento</mat-label>
+                <mat-select
+                  [(ngModel)]="prestamo.id_departamento"
+                  name="Departamentos"
+                  required
+                >
+                  <mat-option *ngFor="let departamento of departamentos" [value]="departamento.id">
+                    {{ departamento.nombre }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="col-6 d-flex justify-content-center">
+            <mat-form-field class="w-100">
+              <mat-label>Filtrar</mat-label>
+              <input matInput (keyup)="applyFilter($event)" placeholder="Busqueda" #input>
+            </mat-form-field>
+          </div>
+  
+          <!-- Tabla -->
+          <div class="row mt-3">
+            <div class="col-12">
+              <table mat-table mat-table [dataSource]="dataSource1" class="mat-elevation-z8 full-width">
+                
+                <ng-container matColumnDef="numero">
+                  <th mat-header-cell *matHeaderCellDef > N° </th>
+                  <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="INSUMO">
+                  <th mat-header-cell *matHeaderCellDef> Dispositivo </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.INSUMO || 'N/A' }}
+                  </td>
+                </ng-container>
+  
+                <ng-container matColumnDef="MODELO">
+                  <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.MODELO || 'N/A' }}
+                  </td>
+                </ng-container>
+  
+                <ng-container matColumnDef="MARCA">
+                  <th mat-header-cell *matHeaderCellDef> Marca </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.MARCA }}
+                  </td>
+                </ng-container>
+  
+                <ng-container matColumnDef="SERIE">
+                  <th mat-header-cell *matHeaderCellDef> Serie </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.Serie }}
+                  </td>
+                </ng-container>
+  
+                <ng-container matColumnDef="ESTADO">
+                  <th mat-header-cell *matHeaderCellDef> Estado </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.ESTADO || 'N/A' }}
+                  </td>
+                </ng-container> 
+
+                <ng-container matColumnDef="CANTIDAD">
+                  <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.CANTIDAD || 'N/A' }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="OBSERVACION">
+                  <th mat-header-cell *matHeaderCellDef> Obaservacion </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.OBSERVACION || 'N/A' }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="select">
+                  <th mat-header-cell *matHeaderCellDef> </th>
+                  <td mat-cell *matCellDef="let element">
+                    <mat-checkbox (change)="onCheckboxChange(element, $event.checked)"></mat-checkbox>
+                  </td>
+                </ng-container>
+  
+                <tr mat-header-row *matHeaderRowDef="displayedColumns1" ></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td [attr.colspan]="displayedColumns1.length" class="mat-cell">
+              <div class="mesnaje-no-existe-resultados">
+                <mat-icon class="max2">error</mat-icon> No existe elementos para mostrar
+              </div>
+            </td>
+          </tr>
+              </table>
+              <mat-paginator
+              #paginator2 
+              [length]="cantidadTotalE"
+              [pageSize]="CantidadPagina"
+              [pageSizeOptions]="tamanioPaginaOptions"
+              [pageIndex]="numerPagina"
+              showFirstLastButtons="true"
+              (page)="cambiarPagina($event)">
+              </mat-paginator>
+            </div>
+          </div>
+  
+          <div class="row mt-4 text-center">
+            <div class="col">
+              <button mat-button mat-dialog-close>Cerrar</button>
+              <button mat-button type="submit" cdkFocusInitial>Crear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-tab>
+</mat-tab-group>

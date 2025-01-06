@@ -5,6 +5,7 @@ import { HttpService } from 'src/app/services/Http.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { FormComponent } from '../form/form.component';
+import { FormkitsComponent } from '../formkits/formkits.component';
 
 @Component({
   selector: 'app-index',
@@ -42,7 +43,34 @@ export class IndexComponent implements OnInit {
       height: 'auto',
       enterAnimationDuration,
       exitAnimationDuration,
-      data: "probando dialogo"
+      data: "genral dialogo"
+    });
+  }
+
+  openDialogKits(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(FormkitsComponent, {
+      width: 'auto',
+      height: 'auto',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: "kits dialogo"
+    });
+  }
+
+  enviarActaKits(): void {
+    this.HttpService.GenerarActaHardPDF('Kits/GenerarActa').subscribe({
+      next: (response: Blob) => {
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Acta_Kists_${new Date().toISOString()}.pdf`;
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Error al descargar el PDF:', err);
+      }
     });
   }
 
@@ -109,6 +137,23 @@ export class IndexComponent implements OnInit {
     this.elementoEditado = { ...element }; // Clonar el objeto para edición
   }
 
+  guardarEdicionKits() {
+    if (this.editandoElementoId !== null) {
+      this.HttpService.Actualizar(this.editandoElementoId, this.elementoEditado, 'Kits/Actualizar')
+        .subscribe(
+          (resOK: any) => {
+            console.log(resOK);
+            this.toastr.success("Elemento Actualizado", resOK);
+            this.editandoElementoId = null; 
+            this.ObtenerKits(); 
+          },
+          (respuestErr: any) => {
+            this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
+          }
+        );
+    }
+  }
+
   guardarEdicion() {
     if (this.editandoElementoId !== null) {
       this.HttpService.Actualizar(this.editandoElementoId, this.elementoEditado, 'Hardware/Actualizar')
@@ -165,6 +210,7 @@ export class IndexComponent implements OnInit {
 
   ngOnInit(): void {
     this.guardarEdicion();
+    this.guardarEdicionKits();
     this.ObtenerElementos();
     this.ObtenerKits();
 

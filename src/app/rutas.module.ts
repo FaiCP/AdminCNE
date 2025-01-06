@@ -9,6 +9,7 @@ import { homePagesRoutes } from "./modules/home-page/home-page.routing";
 import { loginRoutes } from "./modules/login/login.routing";
 import { historialRoutes } from "./modules/historial/historial.routing";
 import { CustodioRoutes } from "./modules/custodios/Custodio.routing";
+import { reportesRoutes } from "./modules/reportes/Reportes.routing";
 
 @NgModule({
   imports: [RouterModule.forChild([
@@ -20,7 +21,8 @@ import { CustodioRoutes } from "./modules/custodios/Custodio.routing";
     ...homePagesRoutes,
     ...loginRoutes,
     ...historialRoutes,
-    ...CustodioRoutes
+    ...CustodioRoutes,
+    ...reportesRoutes
   ])],
   exports:[RouterModule]
 })

@@ -45,7 +45,7 @@ export class IndexComponent implements OnInit {
         this.isLoading = false; // Desactiva el mat-progress-bar al terminar
         this.toastr.success('Inicio de sesión exitoso!')
         
-      }, 3000); // Simula un retraso de 3 segundos
+      }, 5000); // Simula un retraso de 3 segundos
     } 
     else 
     {

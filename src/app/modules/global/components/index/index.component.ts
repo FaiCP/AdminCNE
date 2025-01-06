@@ -15,6 +15,7 @@ export class IndexComponent implements OnInit {
     { link: '/personal/index', icon: 'co_present', label: 'Personal' },
     { link: '/historial/index', icon: 'date_range', label: 'Historial' },
     { link: '/custodio/index', icon: 'supervisor_account', label: 'Custodios' },
+    { link: '/reportes/index', icon: 'donut_small', label: 'Reportes' },
   ];
 
 
