@@ -86,10 +86,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "Hospital:build:production"
+              "buildTarget": "Hospital:build:production"
             },
             "development": {
-              "browserTarget": "Hospital:build:development"
+              "buildTarget": "Hospital:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -97,7 +97,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Hospital:build"
+            "buildTarget": "Hospital:build"
           }
         },
         "test": {
