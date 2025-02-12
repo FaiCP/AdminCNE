@@ -8,9 +8,10 @@ import { FormComponent } from '../form/form.component';
 import { FormkitsComponent } from '../formkits/formkits.component';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss']
+    selector: 'app-index',
+    templateUrl: './index.component.html',
+    styleUrls: ['./index.component.scss'],
+    standalone: false
 })
 export class IndexComponent implements OnInit {
   displayedColumns: string[] = [];

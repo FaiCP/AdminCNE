@@ -3,9 +3,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss']
+    selector: 'app-index',
+    templateUrl: './index.component.html',
+    styleUrls: ['./index.component.scss'],
+    standalone: false
 })
 export class IndexComponent implements OnInit {
   item = [
@@ -19,7 +20,7 @@ export class IndexComponent implements OnInit {
   ];
 
 
-  constructor(public authService: AuthService, router:Router) {}
+  constructor(public authService: AuthService,private router:Router) {}
 
   ngOnInit(): void {
   }

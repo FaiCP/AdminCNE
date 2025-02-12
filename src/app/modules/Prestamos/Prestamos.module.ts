@@ -14,7 +14,6 @@ import { IndexComponent } from './components/index/index.component';
   imports: [
     CommonModule,
     GlobalModule
-  ],
-  entryComponents: [FormComponent]
+  ]
 })
 export class PrestamosModule { }

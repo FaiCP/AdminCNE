@@ -4,9 +4,10 @@ import { HttpService } from 'src/app/services/Http.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+    selector: 'app-form',
+    templateUrl: './form.component.html',
+    styleUrls: ['./form.component.scss'],
+    standalone: false
 })
 export class FormComponent implements OnInit {
 

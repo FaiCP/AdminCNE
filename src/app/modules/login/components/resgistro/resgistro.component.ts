@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-resgistro',
-  templateUrl: './resgistro.component.html',
-  styleUrls: ['./resgistro.component.scss']
+    selector: 'app-resgistro',
+    templateUrl: './resgistro.component.html',
+    styleUrls: ['./resgistro.component.scss'],
+    standalone: false
 })
 export class ResgistroComponent implements OnInit {
 

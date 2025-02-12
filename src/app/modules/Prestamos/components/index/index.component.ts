@@ -9,9 +9,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss']
+    selector: 'app-index',
+    templateUrl: './index.component.html',
+    styleUrls: ['./index.component.scss'],
+    standalone: false
 })
 export class IndexComponent implements OnInit {
 
@@ -65,6 +66,40 @@ export class IndexComponent implements OnInit {
     },
     (respuestErr: any) =>{
       this.toastr.error(respuestErr?.error?.mensajes?.join(','),'Error');
+    });
+  }
+
+  enviarReporte(): void {
+    this.HttpService.GenerarActaHardPDF('Personal/GenerarReporte').subscribe({
+      next: (response: Blob) => {
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Acta_Inventario_${new Date().toISOString()}.pdf`;
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Error al descargar el PDF:', err);
+      }
+    });
+  }
+
+  enviarActaEXEL(): void {
+    this.HttpService.GenerarActaHardEXEL('Personal/GenerarReporteExel').subscribe({
+      next: (response: Blob) => {
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Acta_Inventario_${new Date().toISOString()}.xlsx`;
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Error al descargar el EXEL:', err);
+      }
     });
   }
 

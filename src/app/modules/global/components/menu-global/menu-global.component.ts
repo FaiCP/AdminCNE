@@ -4,15 +4,16 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-menu-global',
-  templateUrl: './menu-global.component.html',
-  styleUrls: ['./menu-global.component.scss']
+    selector: 'app-menu-global',
+    templateUrl: './menu-global.component.html',
+    styleUrls: ['./menu-global.component.scss'],
+    standalone: false
 })
 export class MenuGlobalComponent implements OnInit {
   userName: string | null = null;
   private userNameSubscription: Subscription = new Subscription();
 
-  constructor(private authService: AuthService, private router: Router,) {}
+  constructor(private authService: AuthService,private router:Router ) {}
 
   ngOnInit(): void {
     this.userNameSubscription = this.authService.getUserName().subscribe(userName => {

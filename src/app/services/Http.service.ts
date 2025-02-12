@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 
 
 @Injectable({
@@ -95,5 +96,17 @@ export class HttpService{
 
       const idsStr = ids.join(','); 
   return this.httpClienete.delete(`${this.ruta}/${rutaEspecifica}/${idsStr}`);
+}
+
+obtenerInventarioTotal(rutaEspecifica: string): Observable<any> {
+  return this.httpClienete.get(`${this.ruta}/${rutaEspecifica}`);
+}
+
+obtenerPrestamosPorMes(rutaEspecifica: string): Observable<any> {
+  return this.httpClienete.get(`${this.ruta}/${rutaEspecifica}`);
+}
+
+obtenerEquiposPrestadosPorTipo(rutaEspecifica: string): Observable<any> {
+  return this.httpClienete.get(`${this.ruta}/${rutaEspecifica}/Reportes/EquiposPrestadosPorTipo`);
 }
 }

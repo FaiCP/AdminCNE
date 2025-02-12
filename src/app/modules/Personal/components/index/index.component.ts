@@ -7,14 +7,16 @@ import { MatDialog } from '@angular/material/dialog';
 import {FormComponent} from '../form/form.component';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss']
+    selector: 'app-index',
+    templateUrl: './index.component.html',
+    styleUrls: ['./index.component.scss'],
+    standalone: false
 })
 export class IndexComponent implements OnInit {
 
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<any>([]);
+  elementoEnEdicion: any = null;  
 
   cantidadTotal=0;
   CantidadPagina=10;
@@ -23,6 +25,8 @@ export class IndexComponent implements OnInit {
   tamanioPaginaOptions: number[]=[1,5,10,25,100];
 
   textBusqueda="";
+  editandoElementoId: number | null = null; 
+  elementoEditado: any = {}; 
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
@@ -115,10 +119,35 @@ export class IndexComponent implements OnInit {
     this.ObtenerElementos();
   }
 
+  iniciarEdicion(element: any) {
+    this.editandoElementoId = element.Id; // Guardar ID del elemento en edición
+    this.elementoEditado = { ...element }; // Clonar el objeto para edición
+  }
+
+  guardarEdicion() {
+    if (this.editandoElementoId !== null) {
+      this.HttpService.Actualizar(this.editandoElementoId, this.elementoEditado, 'Personal/Actualizar')
+        .subscribe(
+          (resOK: any) => {
+            console.log(resOK);
+            this.toastr.success("Elemento Actualizado", resOK);
+            this.editandoElementoId = null; 
+            this.ObtenerElementos(); 
+          },
+          (respuestErr: any) => {
+            this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
+          }
+        );
+    }
+  }
+  cancelarEdicion() {
+    this.editandoElementoId = null;
+  }
+
   ngOnInit(): void {
     this.ObtenerElementos();
 
-    this.displayedColumns = ['cedula', 'nombre', 'cargo', 'correo','pass','Action','select']
+    this.displayedColumns = ['cedula', 'nombre', 'cargo', 'correo','pass','Action','editar','select']
   }
 
 }

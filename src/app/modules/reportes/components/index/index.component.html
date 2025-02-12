@@ -1,1 +1,49 @@
-<p>index works!</p>
+<div style="display: block; width: 100%; height: 500px;">
+  <canvas
+    baseChart
+    [data]="barChartData"
+    [options]="barChartOptions"
+    [type]="barChartType"
+    (chartClick)="chartClicked($event)"
+    (chartHover)="chartHovered($event)"
+  >
+  </canvas>
+</div>
+
+<div style="display: block; width: 100%; height: 500px;">
+  <canvas
+  baseChart
+  [data]="pieChartData"
+  [options]="pieChartOptions"
+  [type]="pieChartType"
+  (chartClick)="chartClicked($event)"
+  (chartHover)="chartHovered($event)"
+>
+</canvas>
+</div>
+
+<mat-form-field class="example-form-field">
+  <mat-label>Enter a date range</mat-label>
+  <mat-date-range-input [rangePicker]="rangePicker">
+    <input matStartDate placeholder="Start date" />
+    <input matEndDate placeholder="End date" />
+  </mat-date-range-input>
+  <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+  <mat-date-range-picker #rangePicker>
+    <mat-date-range-picker-actions>
+      <button mat-button matDateRangePickerCancel>Cancel</button>
+      <button mat-raised-button matDateRangePickerApply>Apply</button>
+    </mat-date-range-picker-actions>
+  </mat-date-range-picker>
+</mat-form-field>
+<div style="display: block; width: 100%; height: 500px;">
+  <canvas
+  baseChart
+  [data]="pieChartData"
+  [options]="pieChartOptions"
+  [type]="pieChartType"
+  (chartClick)="chartClicked($event)"
+  (chartHover)="chartHovered($event)"
+>
+</canvas>
+</div>

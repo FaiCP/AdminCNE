@@ -3,9 +3,10 @@ import { HttpService } from 'src/app/services/Http.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-formkits',
-  templateUrl: './formkits.component.html',
-  styleUrls: ['./formkits.component.scss']
+    selector: 'app-formkits',
+    templateUrl: './formkits.component.html',
+    styleUrls: ['./formkits.component.scss'],
+    standalone: false
 })
 export class FormkitsComponent implements OnInit {
 
