@@ -1,6 +1,7 @@
 # Hospital
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.4.
+HOME and modules of the web application in which is the inventory part and creation of new items, module of loans of inventory objects and creation of minutes of loans and returns, module of history of loans, module of supplies to keep a management of the computer accessories like rams and hard drives used for other PCs, Personnel for the delivery of a document with credentials of the institution, custodians to change or add new authorized custodians for loans and reports showing loans by month and reports by custodian loans
 
 ## Development server
 
