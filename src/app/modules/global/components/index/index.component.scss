@@ -1,7 +1,8 @@
 .app-panel-container{
-  height: calc(100% - 64px);
+  height: 100vh; /* Ocupa toda la altura de la ventana */
   background-color: #3F51B5;
   padding-top: 50px;
+  box-sizing: border-box; /* Asegura que el padding no afecte el cálculo del alto */
 }
 
 .app-panel-container .mat-mdc-card{
