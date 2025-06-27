@@ -7,8 +7,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  private userNameSubject = new BehaviorSubject<string | null>(null); 
-  private apiUrl = 'http://localhost:57355/api'; 
+  private userNameSubject = new BehaviorSubject<string | null>(localStorage.getItem('userName'));
+  private apiUrl = 'http://cneapi.somee.com'; 
   private inactivityTimer: any; 
   private inactivityTimeout = 30 * 60 * 1000; 
 
@@ -19,18 +19,19 @@ export class AuthService {
     const body = { email, password };
   
     return this.http.post(`${this.apiUrl}/login`, body, { headers }).pipe(
-      map((response: any) => {
-        if (response.Token && response.User) {
-          const userName = response.User.nombre;
-          localStorage.setItem('authToken', response.Token); 
-          localStorage.setItem('userName', userName); 
-          
-          this.userNameSubject.next(userName);
-          this.resetInactivityTimer();
-        }
-        return response; 
-      })
-    );
+  map((response: any) => {
+    if (response.token && response.user) {
+      const userName = response.user.nombre;
+      localStorage.setItem('authToken', response.token); 
+      localStorage.setItem('userName', userName); 
+      
+      this.userNameSubject.next(userName);
+      this.resetInactivityTimer();
+    }
+    return response; 
+  })
+);
+
   }
 
   getUserName(): Observable<string | null> {
@@ -45,7 +46,8 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('authToken'); 
+    const token = localStorage.getItem('authToken');
+    return token !== null && token.trim() !== '';
   }
 
   resetInactivityTimer(): void {

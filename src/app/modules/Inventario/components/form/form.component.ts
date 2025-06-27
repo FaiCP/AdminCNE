@@ -11,18 +11,17 @@ import { ToastrService } from 'ngx-toastr';
 export class FormComponent implements OnInit {
 
   ingreso = {
-    id_equipo: '',
+    ubicacion:'',
     descripcion: '',
+    nombre_dispositivo:'',
     marca: '',
     modelo: '',
-    estado:'',
-    ubicacion: '',
-    codigo_cne :'',
-    nombre_dispositivo:'',
+    codigo_cne :'',  
+    id_equipo: '',
+    estado:'',  
     ram:'',
     rom:'',
     procesador:'',
-    idcaja:'',
     valor:''
   }
     isDeviceLaptopOrComputer = false;
@@ -58,6 +57,7 @@ export class FormComponent implements OnInit {
       },
       (respuestErr: any) => {
         this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
+        console.log(this.ingreso);
       });
   }
 

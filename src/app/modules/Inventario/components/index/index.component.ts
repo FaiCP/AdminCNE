@@ -19,6 +19,7 @@ export class IndexComponent implements OnInit {
   dataSource = new MatTableDataSource<any>([]);
   dataSource1 = new MatTableDataSource<any>([]);
   elementoEnEdicion: any = null;
+  
 
   cantidadTotal!:number ;
   cantidadTotalE!:number ;
@@ -26,7 +27,7 @@ export class IndexComponent implements OnInit {
   numerPagina = 0;
   tamanioPaginaOptions: number[] = [1, 5, 10, 25, 100];
 
-  textoBusqueda = " ";
+  textoBusqueda = "";
   editandoElementoId: number | null = null; 
   elementoEditado: any = {}; 
 
@@ -93,7 +94,7 @@ export class IndexComponent implements OnInit {
   }
 
   enviarActaEXEL(): void {
-    this.HttpService.GenerarActaHardEXEL('Hardware/GenerarActaExel').subscribe({
+    this.HttpService.GenerarActaHardEXEL('Hardware/GenerarActaExcel').subscribe({
       next: (response: Blob) => {
         const url = window.URL.createObjectURL(response);
         const a = document.createElement('a');
@@ -185,12 +186,12 @@ export class IndexComponent implements OnInit {
 
   eliminar(id: number) {
     if (confirm(`¿Estás seguro de que deseas eliminar el elemento con ID: ${id}?`))  
-    this.HttpService.Eliminar([id], 'Hardware/Eliminar') 
+    this.HttpService.Eliminarasync([id], 'Hardware/Eliminar') 
       .subscribe(
         (resOK: any) => {
           this.toastr.success("Elemento eliminado", "Éxito");
           this.ObtenerElementos();
-        },
+        },  
         (respuestErr: any) => {
           this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error al eliminar');
         }
@@ -215,7 +216,7 @@ export class IndexComponent implements OnInit {
     this.ObtenerElementos();
     this.ObtenerKits();
 
-    this.displayedColumns = ['numero','Custodio','Serie','id_equipo', 'marca', 'modelo', 'fecha_adquisicion', 'estado','descripcion','valor' , 'borrado', 'editar'];
+    this.displayedColumns = ['numero','Custodio','Serie','id_equipo', 'marca', 'modelo', 'Descripcion', 'estado','descripcion','valor' , 'borrado', 'editar'];
     this.displayedColumns1 = ['numero','INSUMO','MODELO','MARCA', 'SERIE','ESTADO', 'CANTIDAD','OBSERVACION','borrado', 'editar'];
   }
 }

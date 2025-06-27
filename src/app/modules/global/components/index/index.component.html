@@ -2,11 +2,14 @@
   <div class="container">
     <div class="row">
       <div class="col-6 col-sm-4 col-md-3 col-lg-2 p-2 "*ngFor="let menu of item">        
-        <mat-card *ngIf="authService.isAuthenticated()" [routerLink]="menu.link">
-          <mat-icon *ngIf="authService.isAuthenticated()">{{ menu.icon }}</mat-icon>
-          <p *ngIf="authService.isAuthenticated()">{{ menu.label }}</p>
-        </mat-card>
+        <mat-card *ngIf="isAuthenticated" [routerLink]="menu.link">
+          <mat-icon>{{ menu.icon }}</mat-icon>
+          <p>{{ menu.label }}</p>
+        </mat-card>        
       </div>
     </div>
   </div>
 </div>
+<p>Estoy en index home</p>
+<p>¿Autenticado? {{ authService.isAuthenticated() }}</p>
+<p>¿Usuario? {{ authService.getUserName() }}</p>

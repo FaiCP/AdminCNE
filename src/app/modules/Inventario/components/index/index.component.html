@@ -50,7 +50,7 @@
         </ng-container>
 
         <ng-container matColumnDef="Custodio">
-          <th mat-header-cell *matHeaderCellDef=> Custodio </th>
+          <th mat-header-cell *matHeaderCellDef> Custodio </th>
           <td mat-cell  *matCellDef="let element"> {{element.NombreCustodio1}} </td>
         </ng-container>
 
@@ -61,7 +61,7 @@
 
 
         <ng-container matColumnDef="descripcion">
-          <th mat-header-cell *matHeaderCellDef > Observacion </th>
+          <th mat-header-cell *matHeaderCellDef> Observacion </th>
           <td mat-cell *matCellDef="let element">
             <ng-container *ngIf="editandoElementoId === element.id; else showDescripcion">
               <input matInput [(ngModel)]="elementoEditado.descripcion" placeholder="Descripcion">
@@ -71,7 +71,7 @@
         </ng-container>
 
         <ng-container matColumnDef="marca">
-          <th mat-header-cell *matHeaderCellDef > Marca </th>
+          <th mat-header-cell *matHeaderCellDef> Marca </th>
           <td mat-cell *matCellDef="let element">
             <ng-container *ngIf="editandoElementoId === element.id; else showMarca">
               <input matInput [(ngModel)]="elementoEditado.marca" placeholder="Marca">
@@ -81,7 +81,7 @@
         </ng-container>
 
         <ng-container matColumnDef="modelo">
-          <th mat-header-cell *matHeaderCellDef > Modelo </th>
+          <th mat-header-cell *matHeaderCellDef> Modelo </th>
           <td mat-cell *matCellDef="let element">
             <ng-container *ngIf="editandoElementoId === element.id; else showModelo">
               <input matInput [(ngModel)]="elementoEditado.modelo" placeholder="Modelo">
@@ -90,7 +90,7 @@
           </td>
         </ng-container>
         
-        <ng-container matColumnDef="fecha_adquisicion">
+        <ng-container matColumnDef="Descripcion">
           <th mat-header-cell *matHeaderCellDef > Descripcion </th>
           <td mat-cell *matCellDef="let element">
             <ng-container *ngIf="editandoElementoId === element.id; else showModelo">

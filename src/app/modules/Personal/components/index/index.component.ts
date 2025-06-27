@@ -18,7 +18,7 @@ export class IndexComponent implements OnInit {
   dataSource = new MatTableDataSource<any>([]);
   elementoEnEdicion: any = null;  
 
-  cantidadTotal=0;
+  cantidadTotal!:number ;
   CantidadPagina=10;
   numerPagina=0;
   selectedItems: any[] = [];
@@ -78,7 +78,7 @@ export class IndexComponent implements OnInit {
         const url = window.URL.createObjectURL(response);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `Acta_Inventario_${new Date().toISOString()}.pdf`;
+        a.download = `Acta_Credendial_${new Date().toISOString()}.pdf`;
         a.click();
 
         window.URL.revokeObjectURL(url);
@@ -96,16 +96,18 @@ export class IndexComponent implements OnInit {
     this.ObtenerElementos();
   }
 
-  eliminar(id:number){
-    if (confirm(`¿Estás seguro de que deseas eliminar el elemento con ID: ${id}?`)) 
-    this.HttpService.Eliminar([id],'Personal/Eliminar')
-    .subscribe((resOK: any) => {
-      this.toastr.success("Elemento eleminado");
-      this.ObtenerElementos();
-    },
-    (respuestErr: any) =>{
-      this.toastr.error(respuestErr?.error?.mensajes?.join(','),'Error al eliminar');
-    });;
+  eliminar(id: number) {
+    if (confirm(`¿Estás seguro de que deseas eliminar el elemento con ID: ${id}?`))  
+    this.HttpService.Eliminarasync([id], 'Personal/Eliminar') 
+      .subscribe(
+        (resOK: any) => {
+          this.toastr.success("Elemento eliminado", "Éxito");
+          this.ObtenerElementos();
+        },
+        (respuestErr: any) => {
+          this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error al eliminar');
+        }
+      );
   }
 
   applyFilter(event: Event) {
@@ -120,33 +122,37 @@ export class IndexComponent implements OnInit {
   }
 
   iniciarEdicion(element: any) {
-    this.editandoElementoId = element.Id; // Guardar ID del elemento en edición
+    this.editandoElementoId = element.id; // Guardar ID del elemento en edición
     this.elementoEditado = { ...element }; // Clonar el objeto para edición
+    
   }
 
   guardarEdicion() {
-    if (this.editandoElementoId !== null) {
-      this.HttpService.Actualizar(this.editandoElementoId, this.elementoEditado, 'Personal/Actualizar')
-        .subscribe(
-          (resOK: any) => {
-            console.log(resOK);
-            this.toastr.success("Elemento Actualizado", resOK);
-            this.editandoElementoId = null; 
-            this.ObtenerElementos(); 
-          },
-          (respuestErr: any) => {
-            this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
-          }
-        );
-    }
+  if (this.editandoElementoId !== null) {
+    this.HttpService.Actualizar(this.editandoElementoId, this.elementoEditado, 'Personal/Actualizar')
+      .subscribe(
+        (resOK: any) => {
+          this.toastr.success("Elemento actualizado correctamente");
+          this.editandoElementoId = null;
+          this.elementoEditado = {};
+          this.ObtenerElementos(); // Refresca los datos
+        },
+        (resErr: any) => {
+          this.toastr.error(resErr?.error?.mensajes?.join(','), 'Error al actualizar');
+        }
+      );
   }
+}
+
   cancelarEdicion() {
-    this.editandoElementoId = null;
-  }
+  this.editandoElementoId = null;
+  this.elementoEditado = {};
+}
+
 
   ngOnInit(): void {
     this.ObtenerElementos();
-
+    this.guardarEdicion();
     this.displayedColumns = ['cedula', 'nombre', 'cargo', 'correo','pass','Action','editar','select']
   }
 

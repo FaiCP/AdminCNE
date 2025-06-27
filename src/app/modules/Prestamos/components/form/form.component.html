@@ -25,7 +25,7 @@
             <mat-form-field appearance="fill" class="full-width">
               <mat-label>Departamento</mat-label>
               <mat-select
-                [(ngModel)]="prestamo.id_departamento"
+                [(ngModel)]="id_departamento"
                 name="Departamentos"
                 required
               >
@@ -148,7 +148,7 @@
               <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Departamento</mat-label>
                 <mat-select
-                  [(ngModel)]="prestamo.id_departamento"
+                  [(ngModel)]="id_departamento"
                   name="Departamentos"
                   required
                 >
@@ -229,7 +229,10 @@
                 <ng-container matColumnDef="select">
                   <th mat-header-cell *matHeaderCellDef> </th>
                   <td mat-cell *matCellDef="let element">
-                    <mat-checkbox (change)="onCheckboxChange(element, $event.checked)"></mat-checkbox>
+                    <mat-checkbox 
+                    [checked]="selectedItems.includes(element.id_equipo)" 
+                    (change)="onCheckboxChange(element, $event.checked)">
+                  </mat-checkbox>
                   </td>
                 </ng-container>
   

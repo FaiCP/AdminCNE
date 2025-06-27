@@ -42,27 +42,23 @@ export class IndexComponent implements OnInit {
   login(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false; // Desactiva el mat-progress-bar al terminar
-        this.toastr.success('Inicio de sesión exitoso!')
-        
-      }, 5000); // Simula un retraso de 3 segundos
-    } 
-    else 
-    {
+  
+      const { email, password } = this.loginForm.value;
+  
+      this.authService.login(email, password).subscribe(
+        (response) => {
+          this.isLoading = false;
+          this.toastr.success('Inicio de sesión exitoso!');
+          this.router.navigate(['/home/index']);
+        },
+        (respuestErr: any) => {
+          this.isLoading = false;
+          this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Credenciales incorrectas');
+        }
+      );
+  
+    } else {
       alert('Por favor complete el formulario correctamente.');
-    }
-
-    const { email, password } = this.loginForm.value;
-
-    this.authService.login(email, password).subscribe(
-      (response) => {
-        this.router.navigate(['/'])
-      },
-      (respuestErr: any) => {
-        this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Credenciales incorrectas');
-      }
-    );
-    
+    }    
   }
 }

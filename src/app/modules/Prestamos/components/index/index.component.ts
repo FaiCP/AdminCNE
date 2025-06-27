@@ -104,7 +104,7 @@ export class IndexComponent implements OnInit {
   }
 
   enviarActa(editandoElementoId: any) {
-    this.HttpService.GenerarActaDevolucionPDF(editandoElementoId,'GestionActivos/GenerarDevolucionPDF').subscribe({
+    this.HttpService.GenerarActaDevolucionPDF(editandoElementoId,'GestionActivos/devolucion').subscribe({
       next: (response: Blob) => {
           const url = window.URL.createObjectURL(response);
           const a = document.createElement('a');
@@ -127,7 +127,7 @@ export class IndexComponent implements OnInit {
 
   eliminar(id:number){
     if (confirm(`¿Estás seguro de que deseas eliminar el elemento con ID: ${id}?`)) 
-    this.HttpService.Eliminar([id],'GestionActivos/Eliminar')
+    this.HttpService.Eliminarasync([id],'GestionActivos/Eliminar')
     .subscribe((resOK: any) => {
       this.toastr.success("Eleemento eleminado");
       this.ObtenerElementos();

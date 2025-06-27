@@ -13,7 +13,6 @@ import { MatPaginator } from '@angular/material/paginator';
 export class FormComponent implements OnInit {
 
   prestamo = {
-    id_departamento: '',
     id_equipo: '',
     id_custodio: '',
   };
@@ -34,12 +33,14 @@ export class FormComponent implements OnInit {
 
   dataSource = new MatTableDataSource<any>([]); 
   dataSource1 = new MatTableDataSource<any>([]);
+  dataSource2 = new MatTableDataSource<any>([]);
   tamanioPaginaOptions: number[]=[1,5];
   filterText: string = ''; 
   cantidadTotalE = 0;
   cantidadTotal = 0;
   CantidadPagina = 5;
   numerPagina = 0;
+  id_departamento = '';
 
   displayedColumns1: string[] = [];
   displayedColumns: string[] = [];
@@ -67,6 +68,7 @@ export class FormComponent implements OnInit {
     this.ObtenerHardwares();
     this.ObtenerCustodios();
     this.ObtenerKits();
+    this.ObtenerElementos();
   }
 
   ObtenerCustodios() {
@@ -83,14 +85,14 @@ export class FormComponent implements OnInit {
     const selectedCustodio = this.custodios.find(custodio => custodio.id === custodioId);
 
     if (selectedCustodio) {
-      this.prestamo.id_departamento = this.departamentos.find(dep => dep.nombre === selectedCustodio.departamento)?.id;
+      this.id_departamento = this.departamentos.find(dep => dep.nombre === selectedCustodio.departamento)?.id;
     }
   }
 
   ObtenerDepartamentos() {   
-    this.HttpService.LeerTodo(50, this.numerPagina, this.textBusqueda, 'departamentos')
+    this.HttpService.LeerTodo(50, this.numerPagina, this.textBusqueda, 'departamentos/LeerTodo')
       .subscribe((resOK: any) => {
-        this.departamentos = resOK.datos.elementos;
+        this.departamentos = resOK.elementos;
       },
       (respuestErr: any) => {
         this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
@@ -119,17 +121,41 @@ export class FormComponent implements OnInit {
         this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
       });
   }
-  
+ObtenerElementos() {
+  this.HttpService.LeerTodo(this.CantidadPagina, this.numerPagina, this.textBusqueda, 'GestionActivos/LeerTodo')
+    .subscribe((resOK: any) => {
+      this.dataSource2.data = resOK.datos.elementos;
+    },
+    (respuestErr: any) => {
+      this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
+    });
+}
 
-  onCheckboxChange(element: any, isChecked: boolean): void {
-    const id_equipo = element.id_equipo;
-    if (isChecked) {
-      this.selectedItems.push(id_equipo); 
-    } else {
-      this.selectedItems = this.selectedItems.filter(id_equipo => id_equipo !== element.id_equipo);
+ onCheckboxChange(element: any, isChecked: boolean): void {
+  const id_equipo = element.id_equipo;
+  const equipo = this.dataSource.data.find((e: any) => e.id_equipo === id_equipo);
+
+  let estaPrestado = !!equipo?.nombreCustodio1?.trim();
+  
+  console.log(`Custodio actual: "${equipo?.nombreCustodio1}"`);
+  console.log('Checkbox:', isChecked, 'Equipo:', equipo);
+  console.log('¿Está prestado?', estaPrestado);
+
+  if (isChecked) {
+    if (estaPrestado) {
+      this.toastr.warning(`El equipo con ID ${id_equipo} ya se encuentra prestado.`, 'Advertencia');
+      return;
     }
-    console.log('IDs seleccionados:', this.selectedItems); 
+
+    if (!this.selectedItems.includes(id_equipo)) {
+      this.selectedItems.push(id_equipo);
+    }
+  } else {
+    this.selectedItems = this.selectedItems.filter(id => id !== id_equipo);
   }
+
+  console.log('IDs seleccionados:', this.selectedItems);
+}
 
   cambiarPagina(event:any)
   {
@@ -153,10 +179,10 @@ export class FormComponent implements OnInit {
 
   Post(prestamo: any) {
     const registros = this.selectedItems.map(idEquipo => ({
-      id_equipo: idEquipo,
-      id_departamento: prestamo.id_departamento, 
-      id_custodio: prestamo.id_custodio 
+      IdEquipo: idEquipo,
+      IdCustodio: prestamo.id_custodio
     }));
+    console.log(prestamo);
     if (registros.length === 0) {
       this.toastr.warning("No se puede crear elementos: la lista de registros está vacía");
       return; 
@@ -184,7 +210,7 @@ export class FormComponent implements OnInit {
   enviarActa(): void {
     console.log("IDs seleccionados:", this.selecteIds);
 
-    this.HttpService.GenerarActaPDF(this.selecteIds, 'GestionActivos/GenerarActa').subscribe({
+    this.HttpService.GenerarActaPDF(this.selecteIds, 'GestionActivos/acta').subscribe({
         next: (response: Blob) => {
             // Crear un enlace para descargar el PDF
             const url = window.URL.createObjectURL(response);

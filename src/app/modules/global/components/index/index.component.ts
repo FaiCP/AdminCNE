@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
     standalone: false
 })
 export class IndexComponent implements OnInit {
+  isAuthenticated = false;
+
   item = [
     { link: '/inventario/index', icon: 'event_available', label: 'Inventario' },
     { link: '/prestamos/index', icon: 'event_busy', label: 'Préstamos' },
@@ -20,9 +22,16 @@ export class IndexComponent implements OnInit {
   ];
 
 
-  constructor(public authService: AuthService,private router:Router) {}
+  constructor(public authService: AuthService) {}
+
 
   ngOnInit(): void {
+    this.isAuthenticated = this.authService.isAuthenticated();
+
+    // Recalcular cuando cambie el token o el usuario
+    this.authService.getUserName().subscribe(userName => {
+      this.isAuthenticated = this.authService.isAuthenticated();
+    });
   }
 
   onLogout(): void {

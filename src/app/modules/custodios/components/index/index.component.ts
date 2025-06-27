@@ -117,7 +117,7 @@ export class IndexComponent implements OnInit {
 
   eliminar(id: number) {
     if (confirm(`¿Estás seguro de que deseas eliminar el elemento con ID: ${id}?`))  
-    this.HttpService.Eliminar([id], 'Hardware/Eliminar') 
+    this.HttpService.Eliminarasync([id], 'Custodios/Eliminar') 
       .subscribe(
         (resOK: any) => {
           this.toastr.success("Elemento eliminado", "Éxito");

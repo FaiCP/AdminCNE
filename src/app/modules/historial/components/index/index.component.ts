@@ -77,10 +77,10 @@ export class IndexComponent implements OnInit {
 
   ObtenerDepartamentos() {
     
-    this.HttpService.LeerTodo(50, this.numerPagina, this.textBusqueda, 'departamentos')
+    this.HttpService.LeerTodo(50, this.numerPagina, this.textBusqueda, 'departamentos/LeerTodo')
       .subscribe((resOK: any) => {
-        this.departamentos = resOK.datos.elementos;
-        this.cantidadTotal = resOK.datos.cantidadTotal;
+        this.departamentos = resOK.elementos;
+        this.cantidadTotal = resOK.cantidadTotal;
       },
       (respuestErr: any) => {
         this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
