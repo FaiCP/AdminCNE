@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'; 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private userNameSubject = new BehaviorSubject<string | null>(localStorage.getItem('userName'));
-  private apiUrl = 'http://cneapi.somee.com'; 
+  private apiUrl =  environment.apiUrl
   private inactivityTimer: any; 
   private inactivityTimeout = 30 * 60 * 1000; 
 

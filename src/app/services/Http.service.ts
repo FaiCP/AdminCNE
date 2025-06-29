@@ -1,4 +1,5 @@
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+import { environment } from 'src/environments/environment';
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
@@ -9,7 +10,7 @@ import { Observable } from "rxjs";
 export class HttpService{
 
   headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  ruta ="http://cneapi.somee.com/api"; // Cambia esto por la URL de tu API
+  ruta = environment.apiUrl; // Cambia esto por la URL de tu API
 
   constructor(
     private httpClienete:HttpClient
