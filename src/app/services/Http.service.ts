@@ -10,7 +10,7 @@ import { Observable } from "rxjs";
 export class HttpService{
 
   headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  ruta = environment.apiUrl; // Cambia esto por la URL de tu API
+  ruta = environment.apiUrl + '/api'; // Asegúrate de que esta ruta sea correcta según tu configuración de API
 
   constructor(
     private httpClienete:HttpClient
