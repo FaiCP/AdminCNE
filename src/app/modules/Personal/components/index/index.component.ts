@@ -59,7 +59,7 @@ export class IndexComponent implements OnInit {
   }
 
   onCheckboxChange(element: any, isChecked: boolean): void {
-    const id = element.Id;
+    const id = element.id;
     if (isChecked) {
       this.selectedItems.push(id); 
     } else {
@@ -69,25 +69,27 @@ export class IndexComponent implements OnInit {
   }
 
   enviarActa(): void {
-    if (this.selectedItems.length === 0) {
-      this.toastr.warning('Seleccione al menos un equipo para generar el acta');
-      return;
-    }
-    this.HttpService.GenerarActaPerdPDF(this.selectedItems,'Personal/GenerarActa').subscribe({
-      next: (response: Blob) => {
-        const url = window.URL.createObjectURL(response);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Acta_Credendial_${new Date().toISOString()}.pdf`;
-        a.click();
-
-        window.URL.revokeObjectURL(url);
-      },
-      error: (err) => {
-        console.error('Error al descargar el PDF:', err);
-      }
-    });
+  if (this.selectedItems.length === 0) {
+    this.toastr.warning('Seleccione al menos un equipo para generar el acta');
+    return;
   }
+
+  this.HttpService.GenerarActaPerdPDF(this.selectedItems, 'Personal/GenerarActa').subscribe({
+    next: (response: Blob) => {
+      const url = window.URL.createObjectURL(response);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Acta_Credendial_${new Date().toISOString()}.pdf`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.error('Error al descargar el PDF:', err);
+    }
+  });
+}
+
+
 
   cambiarPagina(event:any)
   {

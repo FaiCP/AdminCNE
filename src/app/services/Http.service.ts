@@ -10,7 +10,7 @@ import { Observable } from "rxjs";
 export class HttpService{
 
   headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  ruta = environment.apiUrl + '/api'; // Asegúrate de que esta ruta sea correcta según tu configuración de API
+  ruta ='https://localhost:7153/api';
 
   constructor(
     private httpClienete:HttpClient
@@ -39,6 +39,7 @@ export class HttpService{
       return this.httpClienete.get(`${this.ruta}/${rutaEspecifica}`,{params : parametros});
     }
 
+    
     GenerarActaPDF(ids: number[],rutaEspecifica: string): Observable<Blob> {
   if (!ids || ids.length === 0) {
     throw new Error("El array de IDs está vacío o no es válido.");
@@ -81,12 +82,17 @@ export class HttpService{
       });
   }
 
-    GenerarActaPerdPDF(ids: number[],rutaEspecifica:string) {
-      const params = ids.join(',');
-      return this.httpClienete.get(`${this.ruta}/${rutaEspecifica}/${ids}`, {
-       responseType: 'blob'
-      });
+    GenerarActaPerdPDF(ids: number[], rutaEspecifica: string) {
+
+  const filteredIds = ids.filter(id => id != null && id !== undefined && id !== 0);
+  const params = filteredIds.join(',');
+
+  return this.httpClienete.get(`${this.ruta}/${rutaEspecifica}?ids=${params}`, {
+    responseType: 'blob'
+  });
 }
+
+
 
 
     LeerUno(id: number,rutaEspecifica:string){
