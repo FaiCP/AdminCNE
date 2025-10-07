@@ -10,7 +10,7 @@ import { Observable } from "rxjs";
 export class HttpService{
 
   headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  ruta ='https://localhost:7153/api';
+  ruta ='https://cneapi.somee.com';
 
   constructor(
     private httpClienete:HttpClient
