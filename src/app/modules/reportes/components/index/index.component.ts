@@ -1,201 +1,181 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpService } from 'src/app/services/Http.service';
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartType, Chart } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import annotationPlugin from'chartjs-plugin-annotation';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { HttpService } from 'src/app/services/Http.service';
+import { GlobalModule } from 'src/app/modules/global/global.module';
 
-
-import { Chart } from 'chart.js';
-
-
-
-// Registrar plugins de Chart.js
 Chart.register(ChartDataLabels);
-Chart.register(annotationPlugin);
+
+interface PrestamosPorMes {
+  Mes?: string;
+  mes?: string;
+  TotalPrestamos?: number;
+  totalPrestamos?: number;
+}
+
+interface InventarioItem {
+  NombreDispositivo?: string;
+  nombreDispositivo?: string;
+  Total?: number;
+  total?: number;
+}
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss'],
   standalone: true,
-  imports: [BaseChartDirective,MatFormFieldModule, MatInputModule, MatDatepickerModule, MatButtonModule],
+  imports: [BaseChartDirective, CommonModule, GlobalModule],
 })
 export class IndexComponent implements OnInit {
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+  readonly totalHardware = signal<number>(0);
+  readonly totalPrestamos = signal<number>(0);
+  readonly totalCustodios = signal<number>(0);
+  readonly totalSuministros = signal<number>(0);
+  readonly isLoading = signal<boolean>(false);
 
-  // Opciones para el gráfico de pie
-  public pieChartOptions: ChartConfiguration['options'] = {
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
-      datalabels: {
-        formatter: (value, ctx) => {
-          if (ctx.chart.data.labels) {
-            return ctx.chart.data.labels[ctx.dataIndex];
-          }
-          return '';
-        },
-      },
-    },
-  };
-
-  // Datos del gráfico de pie
-  public pieChartData: ChartData<'pie'> = {
-    labels: [], // Etiquetas dinámicas (nombres de meses)
-    datasets: [
-      {
-        data: [], // Datos dinámicos (total de préstamos)
-        label: 'Prestamos por Mes',
-      },
-    ],
-  };
-
-  public pieChartType: ChartType = 'pie';
-
-  // Opciones para el gráfico de barras
-  public barChartOptions: ChartConfiguration['options'] = {
-    scales: {
-      x: {},
-      y: {
-        min: 0,
-      },
-    },
-    plugins: {
-      legend: {
-        display: true,
-      },
-      datalabels: {
-        anchor: 'end',
-        align: 'end',
-      },
-    },
-  };
-
-  // Datos del gráfico de barras
-  public barChartData: ChartData<'bar'> = {
-    labels: [], // Etiquetas dinámicas (nombres de dispositivos)
-    datasets: [
-      {
-        data: [], // Datos dinámicos (totales por dispositivo)
-        label: 'Inventario Total',
-      },
-    ],
-  };
+  private readonly chartPalette: string[] = [
+    '#1565C0',
+    '#0288D1',
+    '#00897B',
+    '#43A047',
+    '#F9A825',
+    '#EF6C00',
+    '#C62828',
+    '#6A1B9A',
+  ];
 
   public barChartType: ChartType = 'bar';
-
-  public lineChartOptions: ChartConfiguration['options'] = {
-    elements: {
-      line: {
-        tension: 0.5,
-      },
-    },
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
-      // We use this empty structure as a placeholder for dynamic theming.
-      y: {
-        position: 'left',
-      },
-      y1: {
-        position: 'right',
-        grid: {
-          color: 'rgba(255,0,0,0.3)',
-        },
-        ticks: {
-          color: 'red',
-        },
-      },
+      x: {},
+      y: { min: 0 },
     },
-
     plugins: {
       legend: { display: true },
-      annotation: {
-        annotations: [
-          {
-            type: 'line',
-            scaleID: 'x',
-            value: 'March',
-            borderColor: 'orange',
-            borderWidth: 2,
-            label: {
-              display: true,
-              position: 'center',
-              color: 'orange',
-              content: 'LineAnno',
-              font: {
-                weight: 'bold',
-              },
-            },
-          },
-        ],
+      datalabels: { anchor: 'end', align: 'end', color: '#333' },
+    },
+  };
+  public barChartData: ChartData<'bar'> = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        label: 'Inventario por Tipo',
+        backgroundColor: 'rgba(21, 101, 192, 0.85)',
+        borderColor: '#1565C0',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  public doughnutChartType: ChartType = 'doughnut';
+  public doughnutChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'top' },
+      datalabels: {
+        formatter: (value: number, ctx: any) => {
+          return ctx.chart.data.labels?.[ctx.dataIndex] ?? '';
+        },
+        color: '#fff',
+        font: { weight: 'bold', size: 11 },
       },
     },
   };
+  public doughnutChartData: ChartData<'doughnut'> = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        label: 'Prestamos por Mes',
+        backgroundColor: this.chartPalette,
+      },
+    ],
+  };
 
-  public lineChartType: ChartType = 'line';
-
-  constructor(private HttpService: HttpService) {}
+  constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {
-    this.cargarDatosPieChart();
-    this.cargarDatosBarChart();
+    this.isLoading.set(true);
+    this.cargarKPIs();
+    this.cargarInventarioBar();
+    this.cargarPrestamosDoughnut();
   }
 
-  // Cargar datos para el gráfico de pie
-  cargarDatosPieChart(): void {
-    this.HttpService.obtenerPrestamosPorMes('Reportes/PrestamosPorMes').subscribe(
-      (data: any) => {
-        console.log('Datos recibidos del backend:', data);
+  private normalize(res: any): { items: any[]; total: number } {
+    const inner = res.datos ?? res.data ?? res;
+    return {
+      items: inner.elementos ?? inner.items ?? [],
+      total: inner.cantidadTotal ?? inner.totalCount ?? 0,
+    };
+  }
 
-        // Extraer etiquetas (meses) y datos (totales)
-        const labels = data.map((item: any) => item.Mes); // Mapea "Mes"
-        const totals = data.map((item: any) => item.TotalPrestamos); // Mapea "TotalPrestamos"
+  private cargarKPIs(): void {
+    this.httpService.LeerTodo(1, 0, '', 'Hardware/LeerTodo').subscribe({
+      next: (res: any) => this.totalHardware.set(this.normalize(res).total),
+      error: () => this.totalHardware.set(0),
+    });
 
-        this.pieChartData.labels = labels;
-        // Actualizar datos del gráfico
-        this.pieChartData.labels = labels;
-        this.pieChartData.datasets[0].data = totals;
+    this.httpService.LeerTodo(1, 0, '', 'GestionActivos/LeerTodo').subscribe({
+      next: (res: any) => this.totalPrestamos.set(this.normalize(res).total),
+      error: () => this.totalPrestamos.set(0),
+    });
 
-        // Forzar actualización del gráfico
-        this.chart?.update();
+    this.httpService.LeerTodo(1, 0, '', 'Custodios/LeerTodo').subscribe({
+      next: (res: any) => this.totalCustodios.set(this.normalize(res).total),
+      error: () => this.totalCustodios.set(0),
+    });
+
+    this.httpService.LeerTodo(1, 0, '', 'Suministros/LeerTodo').subscribe({
+      next: (res: any) => {
+        this.totalSuministros.set(this.normalize(res).total);
+        this.isLoading.set(false);
       },
-      (error) => {
-        console.error('Error al cargar datos del gráfico de pie:', error);
-      }
-    );
-  }
-
-  // Cargar datos para el gráfico de barras
-  cargarDatosBarChart(): void {
-    this.HttpService.obtenerInventarioTotal('Reportes/InventarioTotal').subscribe(
-      (data: any) => {
-        console.log('Datos de inventario recibidos:', data);
-
-        // Extraer etiquetas y datos
-        this.barChartData.labels = data.map((item: any) => item.NombreDispositivo);
-        this.barChartData.datasets[0].data = data.map((item: any) => item.Total);
-
-        // Actualizar datos del gráfico
-        this.barChartData = { ...this.barChartData };
+      error: () => {
+        this.totalSuministros.set(0);
+        this.isLoading.set(false);
       },
-      (error) => {
-        console.error('Error al cargar datos del gráfico de barras:', error);
-      }
-    );
+    });
   }
 
-  // Eventos de la gráfica (opcional)
-  public chartClicked({ event, active }: { event?: ChartEvent; active?: object[] }): void {
-    console.log('Evento click:', event, active);
+  private normalizeArray(res: any): any[] {
+    if (Array.isArray(res)) return res;
+    const inner = res.datos ?? res.data ?? res;
+    if (Array.isArray(inner)) return inner;
+    return inner.elementos ?? inner.items ?? [];
   }
 
-  public chartHovered({ event, active }: { event: ChartEvent; active: object[] }): void {
-    console.log('Evento hover:', event, active);
+  private cargarInventarioBar(): void {
+    this.httpService.obtenerInventarioTotal('Reportes/InventarioTotal').subscribe({
+      next: (res: any) => {
+        const data: InventarioItem[] = this.normalizeArray(res);
+        this.barChartData = {
+          ...this.barChartData,
+          labels: data.map((item) => item.NombreDispositivo ?? item.nombreDispositivo ?? ''),
+          datasets: [{ ...this.barChartData.datasets[0], data: data.map((item) => item.Total ?? item.total ?? 0) }],
+        };
+      },
+      error: (err) => console.error('Error inventario:', err),
+    });
+  }
+
+  private cargarPrestamosDoughnut(): void {
+    this.httpService.obtenerPrestamosPorMes('Reportes/PrestamosPorMes').subscribe({
+      next: (res: any) => {
+        const data: PrestamosPorMes[] = this.normalizeArray(res);
+        this.doughnutChartData = {
+          ...this.doughnutChartData,
+          labels: data.map((item) => item.Mes ?? item.mes ?? ''),
+          datasets: [{ ...this.doughnutChartData.datasets[0], data: data.map((item) => item.TotalPrestamos ?? item.totalPrestamos ?? 0) }],
+        };
+      },
+      error: (err) => console.error('Error prestamos:', err),
+    });
   }
 }
