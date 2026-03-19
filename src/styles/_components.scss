@@ -1,0 +1,169 @@
+// ============================================================
+// _components.scss — AdminCNE Shared Component Styles
+// ============================================================
+
+// --- Page Toolbar ---
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--cne-space-3);
+  padding: var(--cne-space-4) var(--cne-space-6);
+  background: var(--cne-surface-card);
+  border-bottom: 1px solid var(--cne-border-default);
+  box-shadow: var(--cne-shadow-sm);
+
+  &__start { display: flex; gap: var(--cne-space-2); align-items: center; }
+
+  &__search {
+    flex: 1;
+    min-width: 200px;
+    max-width: 380px;
+    // Collapse mat-form-field bottom padding inside toolbar
+    margin-bottom: -1.25em;
+  }
+
+  &__end {
+    display: flex;
+    gap: var(--cne-space-2);
+    margin-left: auto;
+  }
+}
+
+// --- Filter Toolbar (historial selectors) ---
+.filter-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cne-space-4);
+  padding: var(--cne-space-4) var(--cne-space-6);
+  background: var(--cne-surface-card);
+  border-bottom: 1px solid var(--cne-border-default);
+
+  .mat-mdc-form-field {
+    min-width: 220px;
+    flex: 1;
+  }
+}
+
+// --- Table Card ---
+.table-card {
+  margin: var(--cne-space-5) var(--cne-space-6);
+  border-radius: var(--cne-radius-lg);
+  box-shadow: var(--cne-shadow-md);
+  background: var(--cne-surface-card);
+  overflow: hidden;
+}
+
+// --- CNE Table ---
+.cne-table {
+  width: 100%;
+
+  .mat-mdc-header-row {
+    background: var(--cne-primary-700);
+  }
+
+  .mat-mdc-header-cell {
+    color: var(--cne-text-inverse) !important;
+    font-size: var(--cne-text-xs);
+    font-weight: var(--cne-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: none;
+    padding: var(--cne-space-3) var(--cne-space-4);
+  }
+
+  .mat-mdc-row {
+    transition: background var(--cne-transition-fast);
+    &:hover { background: var(--cne-primary-50) !important; }
+  }
+
+  .mat-mdc-cell {
+    font-size: var(--cne-text-sm);
+    color: var(--cne-text-primary);
+    padding: var(--cne-space-2) var(--cne-space-4);
+    border-bottom-color: var(--cne-border-default);
+  }
+}
+
+// --- Row Actions ---
+.row-actions {
+  display: flex;
+  align-items: center;
+}
+
+// --- Cell Inputs (inline edit) ---
+.cell-input {
+  width: 100%;
+  max-width: 180px;
+  font-size: var(--cne-text-sm) !important;
+}
+
+// --- Status Badges ---
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: var(--cne-radius-full);
+  font-size: var(--cne-text-xs);
+  font-weight: var(--cne-weight-medium);
+  white-space: nowrap;
+
+  &--active {
+    background: var(--cne-success-50);
+    color: var(--cne-success-700);
+  }
+
+  &--inactive {
+    background: var(--cne-warning-50);
+    color: var(--cne-warning-700);
+  }
+
+  &--error {
+    background: var(--cne-error-50);
+    color: var(--cne-error-700);
+  }
+}
+
+// --- Skeleton Loader ---
+.skeleton-table {
+  padding: var(--cne-space-4);
+}
+
+.skeleton-row {
+  height: 52px;
+  border-radius: var(--cne-radius-sm);
+  margin-bottom: var(--cne-space-2);
+  background: linear-gradient(
+    90deg,
+    var(--cne-border-default) 0%,
+    #f0f0f0 50%,
+    var(--cne-border-default) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// --- Empty State ---
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--cne-space-12) var(--cne-space-4);
+  color: var(--cne-text-tertiary);
+  gap: var(--cne-space-2);
+
+  mat-icon {
+    font-size: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--cne-border-strong);
+  }
+
+  p { margin: 0; font-size: var(--cne-text-sm); }
+}

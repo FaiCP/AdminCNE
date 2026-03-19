@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IndexComponent } from './components/index/index.component';
 import { MenuGlobalComponent } from './components/menu-global/menu-global.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // Angular Material Modules
@@ -98,7 +98,5 @@ import { RouterModule } from '@angular/router';
     MatProgressBarModule,
     MatTabsModule,
   ],
- 
-  providers: [provideHttpClient(withInterceptorsFromDi())]
 })
 export class GlobalModule { }

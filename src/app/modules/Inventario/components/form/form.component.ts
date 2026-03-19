@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/services/Http.service';
 import { ToastrService } from 'ngx-toastr';
+import { GlobalModule } from 'src/app/modules/global/global.module';
 
 @Component({
     selector: 'app-form',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.scss'],
-    standalone: false
+    standalone: true,
+    imports: [GlobalModule]
 })
 export class FormComponent implements OnInit {
 

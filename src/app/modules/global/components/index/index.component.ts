@@ -1,40 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-index',
-    templateUrl: './index.component.html',
-    styleUrls: ['./index.component.scss'],
-    standalone: false
+  selector: 'app-index',
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.scss'],
+  standalone: false
 })
-export class IndexComponent implements OnInit {
-  isAuthenticated = false;
+export class IndexComponent {
+  protected authService = inject(AuthService);
+
+  // isAuthenticated se lee del signal directamente en el template
+  get isAuthenticated(): boolean {
+    return this.authService.isAuthenticatedSignal();
+  }
 
   item = [
-    { link: '/inventario/index', icon: 'event_available', label: 'Inventario' },
-    { link: '/prestamos/index', icon: 'event_busy', label: 'Préstamos' },
-    { link: '/suministros/index', icon: 'badge', label: 'Suministros' },
-    { link: '/personal/index', icon: 'co_present', label: 'Personal' },
-    { link: '/historial/index', icon: 'date_range', label: 'Historial' },
-    { link: '/custodio/index', icon: 'supervisor_account', label: 'Custodios' },
-    { link: '/reportes/index', icon: 'donut_small', label: 'Reportes' },
+    { link: '/inventario/index', icon: 'inventory_2', label: 'Inventario',  color: 'primary' },
+    { link: '/prestamos/index',  icon: 'swap_horiz',  label: 'Préstamos',   color: 'success' },
+    { link: '/suministros/index',icon: 'category',    label: 'Suministros', color: 'warning' },
+    { link: '/personal/index',   icon: 'people',      label: 'Personal',    color: 'accent'  },
+    { link: '/historial/index',  icon: 'history',     label: 'Historial',   color: 'info'    },
+    { link: '/custodio/index',   icon: 'badge',       label: 'Custodios',   color: 'primary' },
+    { link: '/reportes/index',   icon: 'assessment',  label: 'Reportes',    color: 'error'   },
   ];
-
-
-  constructor(public authService: AuthService) {}
-
-
-  ngOnInit(): void {
-    this.isAuthenticated = this.authService.isAuthenticated();
-
-    // Recalcular cuando cambie el token o el usuario
-    this.authService.getUserName().subscribe(userName => {
-      this.isAuthenticated = this.authService.isAuthenticated();
-    });
-  }
-
-  onLogout(): void {
-    this.authService.logout();
-  }
 }

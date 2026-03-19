@@ -13,8 +13,9 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class IndexComponent implements OnInit {
   loginForm: FormGroup; // Formulario Reactivo
-  errorMessage: string = ''; // Mensaje de error para el usuario
-  isLoading: boolean = false; 
+  errorMessage: string = '';
+  isLoading: boolean = false;
+  showPassword: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,17 +46,19 @@ export class IndexComponent implements OnInit {
   
       const { email, password } = this.loginForm.value;
   
-      this.authService.login(email, password).subscribe(
-        (response) => {
+      this.authService.login(email, password).subscribe({
+        next: () => {
           this.isLoading = false;
           this.toastr.success('Inicio de sesión exitoso!');
-          this.router.navigate(['/home/index']);
+          this.router.navigateByUrl('/home/index', { replaceUrl: true })
+            .then(ok => { if (!ok) console.warn('[Login] navegación bloqueada — revisa authGuard'); });
         },
-        (respuestErr: any) => {
+        error: (err: any) => {
           this.isLoading = false;
-          this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Credenciales incorrectas');
+          const msg = err?.error?.mensajes?.join(', ') ?? err?.error?.message ?? 'Error desconocido';
+          this.toastr.error(msg, 'Credenciales incorrectas');
         }
-      );
+      });
   
     } else {
       alert('Por favor complete el formulario correctamente.');

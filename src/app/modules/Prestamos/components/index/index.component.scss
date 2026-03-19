@@ -1,3 +1,6 @@
-table {
-  width: 100%;
+// Prestamos-specific overrides — shared styles in src/styles/_components.scss
+
+// Datepicker inside table cells
+.mat-mdc-form-field {
+  font-size: var(--cne-text-sm);
 }

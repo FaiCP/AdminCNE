@@ -5,7 +5,6 @@ import { IndexComponent } from "./components/index/index.component";
   {
     path:'prestamos/index',
     component:IndexComponent,
-    loadChildren:()=>import('./Prestamos.module').then(m =>  m.PrestamosModule)
   }
 
 ];

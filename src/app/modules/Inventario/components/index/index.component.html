@@ -1,338 +1,327 @@
-<mat-tab-group>
+<mat-tab-group mat-align-tabs="start">
+
+  <!-- ===== TAB: INVENTARIO HARDWARE ===== -->
   <mat-tab label="Inventario">
-<mat-toolbar>
-  <div class="container-fluid">
-    <div class="row w-100 d-flex justify-content-between align-items-center">
 
-      <div class="col-3 d-flex justify-content-start">
-        <button mat-raised-button color="primary" (click)="openDialog('0ms', '0ms')">
-          <mat-icon>add</mat-icon>
-          Crear
+    <div class="page-toolbar">
+      <div class="page-toolbar__start">
+        <button mat-raised-button color="primary" (click)="openDialog('0ms','0ms')">
+          <mat-icon>add</mat-icon> Nuevo equipo
         </button>
       </div>
-
-      <div class="col-6 d-flex justify-content-center">
-        <mat-form-field class="w-100">
-          <mat-label>Filtrar</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="Busqueda" #input>
-        </mat-form-field>
-      </div>
-
-      <div class="col-3 d-flex justify-content-end">
-        <button mat-raised-button color="primary" (click)="enviarActa()">
-          Generar Acta Pdf
+      <mat-form-field appearance="outline" class="page-toolbar__search">
+        <mat-icon matPrefix>search</mat-icon>
+        <mat-label>Buscar equipos</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Código, serie, custodio...">
+      </mat-form-field>
+      <div class="page-toolbar__end">
+        <button mat-stroked-button (click)="enviarActa()" matTooltip="Exportar acta PDF">
+          <mat-icon>picture_as_pdf</mat-icon> PDF
         </button>
-
-        <button mat-raised-button color="primary" (click)="enviarActaEXEL()">
-          Generar Acta Exel
+        <button mat-stroked-button (click)="enviarActaEXEL()" matTooltip="Exportar Excel">
+          <mat-icon>table_chart</mat-icon> Excel
         </button>
-
       </div>
     </div>
-  </div>
-</mat-toolbar>
 
+    <div class="table-card">
+      <mat-progress-bar mode="indeterminate" color="accent" *ngIf="store.isLoading()"></mat-progress-bar>
 
-<br>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col">
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <table mat-table [dataSource]="store.items()" class="cne-table">
 
         <ng-container matColumnDef="numero">
-          <th mat-header-cell *matHeaderCellDef> N° </th>
-          <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
-        </ng-container>        
+          <th mat-header-cell *matHeaderCellDef>N°</th>
+          <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+        </ng-container>
 
         <ng-container matColumnDef="id_equipo">
-          <th mat-header-cell *matHeaderCellDef> Codigo Equipo </th>
-          <td mat-cell  *matCellDef="let element"> {{element.id_equipo}} </td>
+          <th mat-header-cell *matHeaderCellDef>Código CNE</th>
+          <td mat-cell *matCellDef="let element">{{ element.codigoCne }}</td>
         </ng-container>
 
         <ng-container matColumnDef="Custodio">
-          <th mat-header-cell *matHeaderCellDef> Custodio </th>
-          <td mat-cell  *matCellDef="let element"> {{element.NombreCustodio1}} </td>
+          <th mat-header-cell *matHeaderCellDef>Custodio</th>
+          <td mat-cell *matCellDef="let element">{{ element.nombreCustodio }}</td>
         </ng-container>
 
         <ng-container matColumnDef="Serie">
-          <th mat-header-cell *matHeaderCellDef> Serie </th>
-          <td mat-cell  *matCellDef="let element"> {{element.codigo_cne}} </td>
+          <th mat-header-cell *matHeaderCellDef>Serie</th>
+          <td mat-cell *matCellDef="let element">{{ element.idEquipo }}</td>
         </ng-container>
 
-
         <ng-container matColumnDef="descripcion">
-          <th mat-header-cell *matHeaderCellDef> Observacion </th>
+          <th mat-header-cell *matHeaderCellDef>Observación</th>
           <td mat-cell *matCellDef="let element">
             <ng-container *ngIf="editandoElementoId === element.id; else showDescripcion">
-              <input matInput [(ngModel)]="elementoEditado.descripcion" placeholder="Descripcion">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.descripcion" placeholder="Observación">
             </ng-container>
             <ng-template #showDescripcion>{{ element.descripcion }}</ng-template>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="marca">
-          <th mat-header-cell *matHeaderCellDef> Marca </th>
+          <th mat-header-cell *matHeaderCellDef>Marca</th>
           <td mat-cell *matCellDef="let element">
             <ng-container *ngIf="editandoElementoId === element.id; else showMarca">
-              <input matInput [(ngModel)]="elementoEditado.marca" placeholder="Marca">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.marca" placeholder="Marca">
             </ng-container>
             <ng-template #showMarca>{{ element.marca }}</ng-template>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="modelo">
-          <th mat-header-cell *matHeaderCellDef> Modelo </th>
+          <th mat-header-cell *matHeaderCellDef>Modelo</th>
           <td mat-cell *matCellDef="let element">
             <ng-container *ngIf="editandoElementoId === element.id; else showModelo">
-              <input matInput [(ngModel)]="elementoEditado.modelo" placeholder="Modelo">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.modelo" placeholder="Modelo">
             </ng-container>
             <ng-template #showModelo>{{ element.modelo }}</ng-template>
           </td>
         </ng-container>
-        
+
         <ng-container matColumnDef="Descripcion">
-          <th mat-header-cell *matHeaderCellDef > Descripcion </th>
+          <th mat-header-cell *matHeaderCellDef>Dispositivo</th>
           <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="editandoElementoId === element.id; else showModelo">
-              <input matInput [(ngModel)]="elementoEditado.nombre_dispositivo" placeholder="Descripcion">
+            <ng-container *ngIf="editandoElementoId === element.id; else showDispositivo">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.nombreDispositivo" placeholder="Dispositivo">
             </ng-container>
-            <ng-template #showModelo>{{ element.nombre_dispositivo }}</ng-template>
+            <ng-template #showDispositivo>{{ element.nombreDispositivo }}</ng-template>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef > Estado </th>
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
           <td mat-cell *matCellDef="let element">
             <ng-container *ngIf="editandoElementoId === element.id; else showEstado">
-              <input matInput [(ngModel)]="elementoEditado.estado" placeholder="Estado">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.estado" placeholder="Estado">
             </ng-container>
-            <ng-template #showEstado>{{ element.estado }}</ng-template>
+            <ng-template #showEstado>
+              <span class="status-badge"
+                [class.status-badge--active]="element.estado === 'ACTIVO'"
+                [class.status-badge--inactive]="element.estado !== 'ACTIVO'">
+                {{ element.estado }}
+              </span>
+            </ng-template>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="valor">
-          <th mat-header-cell *matHeaderCellDef > Valor </th>
+          <th mat-header-cell *matHeaderCellDef>Valor</th>
           <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="editandoElementoId === element.id; else showModelo">
-              <input matInput [(ngModel)]="elementoEditado.valor" placeholder="VALOR">
+            <ng-container *ngIf="editandoElementoId === element.id; else showValor">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.valor" placeholder="Valor">
             </ng-container>
-            <ng-template #showModelo>{{ element.valor }}</ng-template>
+            <ng-template #showValor>{{ element.valor }}</ng-template>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="borrado">
-          <th mat-header-cell *matHeaderCellDef > </th>
+          <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <button mat-fab color="primary" aria-label="Delete icon"
-                    (click)="eliminar(element.id)" class="btn btn-primary btn-block">
+            <button mat-icon-button color="warn" (click)="eliminar(element.id)" matTooltip="Eliminar">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
         </ng-container>
-        
 
         <ng-container matColumnDef="editar">
-          <th mat-header-cell *matHeaderCellDef > </th>
+          <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="editandoElementoId === element.id; else editButton">
-              <button mat-icon-button color="primary" (click)="guardarEdicion()">
-                <mat-icon>check</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" (click)="cancelarEdicion()">
-                <mat-icon>close</mat-icon>
-              </button>
-            </ng-container>
-            <ng-template #editButton>
-              <button mat-fab color="accent" aria-label="Edit icon button"
-                      (click)="iniciarEdicion(element)" class="btn btn-primary btn-block">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </ng-template>
+            <div class="row-actions">
+              <ng-container *ngIf="editandoElementoId === element.id; else editBtn">
+                <button mat-icon-button color="primary" (click)="guardarEdicion()" matTooltip="Guardar">
+                  <mat-icon>check_circle</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="cancelarEdicion()" matTooltip="Cancelar">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </ng-container>
+              <ng-template #editBtn>
+                <button mat-icon-button color="accent" (click)="iniciarEdicion(element)" matTooltip="Editar">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </ng-template>
+            </div>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr class="mat-row" *matNoDataRow>
-          <td [attr.colspan]="displayedColumns.length" class="mat-cell">
-            <div class="mesnaje-no-existe-resultados">
-              <mat-icon class="max2">error</mat-icon> No existe elementos para mostrar
+          <td [attr.colspan]="displayedColumns.length">
+            <div class="empty-state">
+              <mat-icon>inventory_2</mat-icon>
+              <p>No se encontraron equipos</p>
             </div>
           </td>
         </tr>
       </table>
 
       <mat-paginator
-        #paginator1
         [length]="cantidadTotal"
         [pageSize]="CantidadPagina"
         [pageSizeOptions]="tamanioPaginaOptions"
         [pageIndex]="numerPagina"
-        showFirstLastButtons="true"
+        showFirstLastButtons
         (page)="cambiarPagina($event)">
       </mat-paginator>
     </div>
-  </div>
-</div>
-</mat-tab>
 
-<mat-tab label="Eleciones">
-  <mat-toolbar>
-    <div class="container-fluid">
-      <div class="row w-100 d-flex justify-content-between align-items-center">
-  
-        <div class="col-3 d-flex justify-content-start">
-          <button mat-raised-button color="primary" (click)="openDialogKits('0ms', '0ms')">
-            <mat-icon>add</mat-icon>
-            Crear
-          </button>
-        </div>
-  
-        <div class="col-6 d-flex justify-content-center">
-          <mat-form-field class="w-100">
-            <mat-label>Filtrar</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Busqueda" #input>
-          </mat-form-field>
-        </div>
-  
-        <div class="col-3 d-flex justify-content-end">
-          <button mat-raised-button color="primary" (click)="enviarActaKits()">
-            Generar Acta
-          </button>
-        </div>
+  </mat-tab>
+
+  <!-- ===== TAB: KITS ELECTORALES ===== -->
+  <mat-tab label="Kits Electorales">
+
+    <div class="page-toolbar">
+      <div class="page-toolbar__start">
+        <button mat-raised-button color="primary" (click)="openDialogKits('0ms','0ms')">
+          <mat-icon>add</mat-icon> Nuevo kit
+        </button>
+      </div>
+      <mat-form-field appearance="outline" class="page-toolbar__search">
+        <mat-icon matPrefix>search</mat-icon>
+        <mat-label>Buscar kits</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Insumo, modelo, serie...">
+      </mat-form-field>
+      <div class="page-toolbar__end">
+        <button mat-stroked-button (click)="enviarActaKits()" matTooltip="Exportar acta kits PDF">
+          <mat-icon>picture_as_pdf</mat-icon> Acta
+        </button>
       </div>
     </div>
-  </mat-toolbar>
-  
-  
-  <br>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8">
+
+    <div class="table-card">
+      <mat-progress-bar mode="indeterminate" color="accent" *ngIf="store.isLoading()"></mat-progress-bar>
+
+      <table mat-table [dataSource]="store.kits()" class="cne-table">
+
         <ng-container matColumnDef="numero">
-          <th mat-header-cell *matHeaderCellDef > N° </th>
-          <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
+          <th mat-header-cell *matHeaderCellDef>N°</th>
+          <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
         </ng-container>
 
         <ng-container matColumnDef="INSUMO">
-          <th mat-header-cell *matHeaderCellDef > Dispositivo </th>
-          <td mat-cell  *matCellDef="let element"> {{element.INSUMO}} </td>
-        </ng-container> 
+          <th mat-header-cell *matHeaderCellDef>Dispositivo</th>
+          <td mat-cell *matCellDef="let element">{{ element.INSUMO }}</td>
+        </ng-container>
 
         <ng-container matColumnDef="MODELO">
-          <th mat-header-cell *matHeaderCellDef > Modelo </th>
+          <th mat-header-cell *matHeaderCellDef>Modelo</th>
           <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="editandoElementoId === element.id; else showDescripcion">
-              <input matInput [(ngModel)]="elementoEditado.MODELO" placeholder="MODELO">
+            <ng-container *ngIf="editandoElementoId === element.id; else showModeloK">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.MODELO" placeholder="Modelo">
             </ng-container>
-            <ng-template #showDescripcion>{{ element.MODELO }}</ng-template>
+            <ng-template #showModeloK>{{ element.MODELO }}</ng-template>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="MARCA">
-          <th mat-header-cell *matHeaderCellDef > Marca </th>
+          <th mat-header-cell *matHeaderCellDef>Marca</th>
           <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="editandoElementoId === element.id; else showMarca">
-              <input matInput [(ngModel)]="elementoEditado.MARCA" placeholder="Marca">
+            <ng-container *ngIf="editandoElementoId === element.id; else showMarcaK">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.MARCA" placeholder="Marca">
             </ng-container>
-            <ng-template #showMarca>{{ element.MARCA }}</ng-template>
+            <ng-template #showMarcaK>{{ element.MARCA }}</ng-template>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="SERIE">
-          <th mat-header-cell *matHeaderCellDef > Serie </th>
-          <td mat-cell  *matCellDef="let element">
-            <ng-container *ngIf="editandoElementoId === element.id; else showMarca">
-              <input matInput [(ngModel)]="elementoEditado.Serie" placeholder="Serie">
+          <th mat-header-cell *matHeaderCellDef>Serie</th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="editandoElementoId === element.id; else showSerieK">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.Serie" placeholder="Serie">
             </ng-container>
-            <ng-template #showMarca>{{ element.Serie }}</ng-template>
+            <ng-template #showSerieK>{{ element.Serie }}</ng-template>
           </td>
-        </ng-container> 
+        </ng-container>
 
         <ng-container matColumnDef="ESTADO">
-          <th mat-header-cell *matHeaderCellDef > Estado </th>
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
           <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="editandoElementoId === element.id; else showEstado">
-              <input matInput [(ngModel)]="elementoEditado.ESTADO" placeholder="Estado">
+            <ng-container *ngIf="editandoElementoId === element.id; else showEstadoK">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.ESTADO" placeholder="Estado">
             </ng-container>
-            <ng-template #showEstado>{{ element.ESTADO }}</ng-template>
-          </td>
-        </ng-container>
-        
-        <ng-container matColumnDef="CANTIDAD">
-          <th mat-header-cell *matHeaderCellDef > Numero de caja </th>
-          <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="editandoElementoId === element.id; else showEstado">
-              <input matInput [(ngModel)]="elementoEditado.CANTIDAD" placeholder="Cantidad">
-            </ng-container>
-            <ng-template #showEstado>{{ element.CANTIDAD }}</ng-template>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="OBSERVACION">
-          <th mat-header-cell *matHeaderCellDef > Observacion </th>
-          <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="editandoElementoId === element.id; else showModelo">
-              <input matInput [(ngModel)]="elementoEditado.OBSERVACION" placeholder="Observacion">
-            </ng-container>
-            <ng-template #showModelo>{{ element.OBSERVACION }}</ng-template>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="borrado">
-          <th mat-header-cell *matHeaderCellDef > </th>
-          <td mat-cell *matCellDef="let element">
-            <button mat-fab color="primary" aria-label="Delete icon"
-                    (click)="eliminar(element.id)" class="btn btn-primary btn-block">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-        
-
-        <ng-container matColumnDef="editar">
-          <th mat-header-cell *matHeaderCellDef > </th>
-          <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="editandoElementoId === element.id; else editButton">
-              <button mat-icon-button color="primary" (click)="guardarEdicionKits()">
-                <mat-icon>check</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" (click)="cancelarEdicion()">
-                <mat-icon>close</mat-icon>
-              </button>
-            </ng-container>
-            <ng-template #editButton>
-              <button mat-fab color="accent" aria-label="Edit icon button"
-                      (click)="iniciarEdicion(element)" class="btn btn-primary btn-block">
-                <mat-icon>edit</mat-icon>
-              </button>
+            <ng-template #showEstadoK>
+              <span class="status-badge"
+                [class.status-badge--active]="element.ESTADO === 'ACTIVO'"
+                [class.status-badge--inactive]="element.ESTADO !== 'ACTIVO'">
+                {{ element.ESTADO }}
+              </span>
             </ng-template>
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns1" ></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
-          <tr class="mat-row" *matNoDataRow>
-            <td [attr.colspan]="displayedColumns1.length" class="mat-cell">
-              <div class="mesnaje-no-existe-resultados">
-                <mat-icon class="max2">error</mat-icon> No existe elementos para mostrar
-              </div>
-            </td>
-          </tr>
-        </table>
-  
-        <mat-paginator
-          #paginator2 
-          [length]="cantidadTotalE"
-          [pageSize]="CantidadPagina"
-          [pageSizeOptions]="tamanioPaginaOptions"
-          [pageIndex]="numerPagina"
-          showFirstLastButtons="true"
-          (page)="cambiarPagina($event)">
-        </mat-paginator>
-      </div>
+        <ng-container matColumnDef="CANTIDAD">
+          <th mat-header-cell *matHeaderCellDef>N° Caja</th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="editandoElementoId === element.id; else showCantidadK">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.CANTIDAD" placeholder="Cantidad">
+            </ng-container>
+            <ng-template #showCantidadK>{{ element.CANTIDAD }}</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="OBSERVACION">
+          <th mat-header-cell *matHeaderCellDef>Observación</th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="editandoElementoId === element.id; else showObsK">
+              <input matInput class="cell-input" [(ngModel)]="elementoEditado.OBSERVACION" placeholder="Observación">
+            </ng-container>
+            <ng-template #showObsK>{{ element.OBSERVACION }}</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="borrado">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="warn" (click)="eliminar(element.id)" matTooltip="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="editar">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <div class="row-actions">
+              <ng-container *ngIf="editandoElementoId === element.id; else editBtnK">
+                <button mat-icon-button color="primary" (click)="guardarEdicionKits()" matTooltip="Guardar">
+                  <mat-icon>check_circle</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="cancelarEdicion()" matTooltip="Cancelar">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </ng-container>
+              <ng-template #editBtnK>
+                <button mat-icon-button color="accent" (click)="iniciarEdicion(element)" matTooltip="Editar">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </ng-template>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td [attr.colspan]="displayedColumns1.length">
+            <div class="empty-state">
+              <mat-icon>inventory_2</mat-icon>
+              <p>No se encontraron kits</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [length]="cantidadTotalE"
+        [pageSize]="CantidadPagina"
+        [pageSizeOptions]="tamanioPaginaOptions"
+        [pageIndex]="numerPagina"
+        showFirstLastButtons
+        (page)="cambiarPagina($event)">
+      </mat-paginator>
     </div>
-  </div>
-</mat-tab>
+
+  </mat-tab>
 </mat-tab-group>

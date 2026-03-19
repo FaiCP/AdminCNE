@@ -1,36 +1,66 @@
+<div class="login-page">
 
-<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
-  <mat-card class="box">
-      <mat-card-header>
-          <mat-card-title>Log in</mat-card-title>
-      </mat-card-header>
+  <!-- Left panel — branding -->
+  <div class="login-brand">
+    <div class="login-brand__inner">
+      <span class="material-icons login-brand__icon">how_to_vote</span>
+      <h1 class="login-brand__title">AdminCNE</h1>
+      <p class="login-brand__subtitle">Sistema de Gestión de Inventario</p>
+      <p class="login-brand__org">Consejo Nacional Electoral</p>
+    </div>
+  </div>
 
-      <form class="example-form" [formGroup]="loginForm">
-          <mat-card-content>
-              <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Email" formControlName="email">
-                    <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="text-danger">
-                      <div *ngIf="email?.errors?.['required']">
-                        El Email es requerrido.
-                      </div>
-                      <div *ngIf="email?.errors?.['email']">
-                        Formato invalido.
-                      </div>
-                    </div>
-              </mat-form-field>
+  <!-- Right panel — form -->
+  <div class="login-form-panel">
+    <mat-card class="login-card">
 
-              <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Password" formControlName="password" type="password">
-                  <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="text-danger">
-                    <div *ngIf="password?.errors?.['required']">
-                      El Password es requerrido.
-                    </div>
-                  </div>
-              </mat-form-field>
-          </mat-card-content>
-          <button type="submit" mat-stroked-button color="accent" class="btn-block" (click)="login()">Log in</button>
+      <mat-progress-bar
+        *ngIf="isLoading"
+        mode="indeterminate"
+        color="accent"
+        class="login-card__progress">
+      </mat-progress-bar>
+
+      <div class="login-card__header">
+        <span class="material-icons login-card__logo">how_to_vote</span>
+        <h2 class="login-card__title">Iniciar sesión</h2>
+        <p class="login-card__subtitle">Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-card__form">
+
+        <mat-form-field appearance="outline" class="login-field">
+          <mat-label>Correo electrónico</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email"
+                 placeholder="usuario@cne.gob.ve" autocomplete="email">
+          <mat-error *ngIf="email?.errors?.['required']">El correo es requerido</mat-error>
+          <mat-error *ngIf="email?.errors?.['email']">Formato de correo inválido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="login-field">
+          <mat-label>Contraseña</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput formControlName="password"
+                 [type]="showPassword ? 'text' : 'password'"
+                 placeholder="••••••••" autocomplete="current-password">
+          <button mat-icon-button matSuffix type="button"
+                  (click)="showPassword = !showPassword"
+                  [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="password?.errors?.['required']">La contraseña es requerida</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit"
+                class="login-btn" [disabled]="isLoading">
+          <mat-icon>login</mat-icon>
+          {{ isLoading ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+
       </form>
-      <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
-  </mat-card>
+
+    </mat-card>
+  </div>
 
 </div>

@@ -1,207 +1,46 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { HttpService } from 'src/app/services/Http.service';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import {FormComponent} from '../form/form.component';
-import { AuthService } from 'src/app/services/auth.service';
-import { Subscription } from 'rxjs';
+import { FormComponent } from '../form/form.component';
+import { LoansStore } from 'src/app/features/loans/store/loans.store';
+import { GlobalModule } from 'src/app/modules/global/global.module';
 
 @Component({
-    selector: 'app-index',
-    templateUrl: './index.component.html',
-    styleUrls: ['./index.component.scss'],
-    standalone: false
+  selector: 'app-index',
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.scss'],
+  standalone: true,
+  imports: [GlobalModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IndexComponent implements OnInit {
+  store  = inject(LoansStore);
+  dialog = inject(MatDialog);
 
-  userName: string | null = null;
-  elementoEnEdicion: any = null;
-  userNameSubscription: Subscription = new Subscription();
+  displayedColumns = ['numero','nombre_empleado','nombre_dispositivo','haedware.marca',
+                      'Serie','haedware.modelo','id_equipo','fecha_asignacion','fecha_devolucion','editar','borrado'];
 
-  checked = false;
-  selectedItems: any[] = [];
-  displayedColumns: string[] = [];
-  dataSource = new MatTableDataSource<any>([]);
+  readonly tamanioPaginaOptions = [1, 5, 10, 25, 100];
+  get cantidadTotal()  { return this.store.total(); }
+  get CantidadPagina() { return this.store.pageSize(); }
+  get numerPagina()    { return this.store.pageIndex(); }
 
-  cantidadTotal=0;
-  CantidadPagina = 10;
-  numerPagina=0;
-  tamanioPaginaOptions: number[]=[1,5,10,25,100];
+  // Bridge: loans uses array + map for multi-row edit
+  get editandoElementosIds() { return this.store.editingIds(); }
+  get elementosEditados()    { return this.store.editingMap(); }
 
-  textoBusqueda=" ";
-  editandoElementosIds: number[] = [];
+  ngOnInit(): void { this.store.load(); }
 
-  elementosEditados: { [id: number]: any } = {};
-
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-
-
-  constructor(
-    private HttpService: HttpService,
-    private toastr: ToastrService,
-    public dialog: MatDialog,
-    private auth:AuthService,
-    
-
-  ){}
-
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(FormComponent, {
-      width: 'auto',
-      height: 'auto',
-      enterAnimationDuration,
-      exitAnimationDuration,
-      data:"probando dialogos"
-    });
+  openDialog(enter?: string, exit?: string): void {
+    this.dialog.open(FormComponent, { width: 'auto', height: 'auto', data: 'probando dialogos' });
   }
 
-  ObtenerElementos(){
-    this.HttpService.LeerTodo(this.CantidadPagina,this.numerPagina,this.textoBusqueda,'GestionActivos/LeerTodo')
-    .subscribe((resOK: any) => {
-      this.dataSource.data = resOK.datos.elementos;
-      this.cantidadTotal = resOK.datos.cantidadTotal;
-      console.log(resOK)
-    },
-    (respuestErr: any) =>{
-      this.toastr.error(respuestErr?.error?.mensajes?.join(','),'Error');
-    });
-  }
-
-  enviarReporte(): void {
-    this.HttpService.GenerarActaHardPDF('Personal/GenerarReporte').subscribe({
-      next: (response: Blob) => {
-        const url = window.URL.createObjectURL(response);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Acta_Inventario_${new Date().toISOString()}.pdf`;
-        a.click();
-
-        window.URL.revokeObjectURL(url);
-      },
-      error: (err) => {
-        console.error('Error al descargar el PDF:', err);
-      }
-    });
-  }
-
-  enviarActaEXEL(): void {
-    this.HttpService.GenerarActaHardEXEL('Personal/GenerarReporteExel').subscribe({
-      next: (response: Blob) => {
-        const url = window.URL.createObjectURL(response);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Acta_Inventario_${new Date().toISOString()}.xlsx`;
-        a.click();
-
-        window.URL.revokeObjectURL(url);
-      },
-      error: (err) => {
-        console.error('Error al descargar el EXEL:', err);
-      }
-    });
-  }
-
-  enviarActa(editandoElementoId: any) {
-    this.HttpService.GenerarActaDevolucionPDF(editandoElementoId,'GestionActivos/devolucion').subscribe({
-      next: (response: Blob) => {
-          const url = window.URL.createObjectURL(response);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `Acta_Prestamo_${new Date().toISOString()}.pdf`;
-          a.click();
-          window.URL.revokeObjectURL(url);
-      },
-      error: (err) => {
-          console.error('Error al descargar el PDF:', err);
-      }
-  });
-  }
-  cambiarPagina(event:any)
-  {
-    this.CantidadPagina = event.pageSize;
-    this.numerPagina = event.pageIndex;
-    this.ObtenerElementos();
-  }
-
-  eliminar(id:number){
-    if (confirm(`¿Estás seguro de que deseas eliminar el elemento con ID: ${id}?`)) 
-    this.HttpService.Eliminarasync([id],'GestionActivos/Eliminar')
-    .subscribe((resOK: any) => {
-      this.toastr.success("Eleemento eleminado");
-      this.ObtenerElementos();
-    },
-    (respuestErr: any) =>{
-      this.toastr.error(respuestErr?.error?.mensajes?.join(','),'Error');
-    });
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.textoBusqueda = filterValue;
-    this.numerPagina = 0;
-    if (this.paginator) {
-      this.paginator.firstPage();
-    }
-    this.ObtenerElementos();
-  }
-
-  iniciarEdicion(element: any): void {  
-    if (!this.editandoElementosIds.includes(element.id)) {
-      this.editandoElementosIds.push(element.id);
-      // Clona el elemento para rastrear los cambios
-      this.elementosEditados[element.id] = { ...element };
-      console.log('Elemento editado al iniciar edición:', this.elementosEditados[element.fecha_devolucion]);
-    }
-  }
-
-  guardarEdicion(): void {
-    const idsEditados = [...this.editandoElementosIds];
-    const actualizaciones = idsEditados.map(id => {
-        const elementoEditado = this.elementosEditados[id];
-        if (elementoEditado) {
-            return this.HttpService.Actualizar(id, elementoEditado, 'GestionActivos/Actualizar').toPromise();
-        }
-        return Promise.resolve();
-    });
-
-    Promise.all(actualizaciones)
-        .then(() => {
-            console.log('Todos los elementos actualizados');
-            this.enviarActa(idsEditados);
-        })
-        .catch(err => {
-            console.error('Error en las actualizaciones:', err);
-        })
-        .finally(() => {
-            this.editandoElementosIds = [];
-            this.elementosEditados = {};
-            this.ObtenerElementos();
-        });
-}
-  
-  cancelarEdicion(element: any): void {
-    const index = this.editandoElementosIds.indexOf(element.id);
-    if (index > -1) {
-      // Elimina el ID de la lista de edición y los cambios realizados
-      this.editandoElementosIds.splice(index, 1);
-      delete this.elementosEditados[element.id];
-    }
-  }
-
-  ngOnInit(): void {
-    this.userNameSubscription = this.auth.getUserName().subscribe(userName => {
-      this.userName = userName;
-    });
-
-    this.ObtenerElementos();    
-    this.displayedColumns = ['numero','nombre_empleado','nombre_dispositivo','haedware.marca','Serie','haedware.modelo',
-                              'id_equipo','fecha_asignacion', 'fecha_devolucion','editar','borrado'];
-  }
-  ngOnDestroy(): void {
-    this.userNameSubscription.unsubscribe(); 
-  }
-
+  applyFilter(event: Event): void          { this.store.setSearch((event.target as HTMLInputElement).value); }
+  cambiarPagina(event: any): void          { this.store.setPage(event.pageSize, event.pageIndex); }
+  iniciarEdicion(el: any): void            { this.store.startEdit(el); }
+  cancelarEdicion(el: any): void           { this.store.cancelEdit(el); }
+  guardarEdicion(): void                   { this.store.saveAll(); }
+  eliminar(id: number): void               { this.store.delete(id); }
+  enviarReporte(): void                    { this.store.downloadReportePdf(); }
+  enviarActaEXEL(): void                   { this.store.downloadReporteExcel(); }
+  enviarActa(ids: any): void               { this.store.saveAll(); }
 }

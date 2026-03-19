@@ -16,7 +16,7 @@
                 required
               >
                 <mat-option *ngFor="let custodio of custodios" [value]="custodio.id">
-                  {{ custodio.nombre_empleado }}
+                  {{ custodio.nombreEmpleado || custodio.nombre_empleado }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -51,7 +51,7 @@
               <ng-container matColumnDef="nombre_dispositivo">
                 <th mat-header-cell *matHeaderCellDef> Dispositivo </th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.nombre_dispositivo || 'N/A' }}
+                  {{ element.nombreDispositivo || element.nombre_dispositivo || 'N/A' }}
                 </td>
               </ng-container>
 
@@ -72,14 +72,14 @@
               <ng-container matColumnDef="haedware.codigo_cne">
                 <th mat-header-cell *matHeaderCellDef> Serie </th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.codigo_cne }}
+                  {{ element.codigoCne || element.codigo_cne }}
                 </td>
               </ng-container>
 
               <ng-container matColumnDef="id_equipo">
                 <th mat-header-cell *matHeaderCellDef> Activo </th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.id_equipo || 'N/A' }}
+                  {{ element.idEquipo || element.id_equipo || 'N/A' }}
                 </td>
               </ng-container>
 
@@ -139,7 +139,7 @@
                   required
                 >
                   <mat-option *ngFor="let custodio of custodios" [value]="custodio.id">
-                    {{ custodio.nombre_empleado }}
+                    {{ custodio.nombreEmpleado || custodio.nombre_empleado }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -230,7 +230,7 @@
                   <th mat-header-cell *matHeaderCellDef> </th>
                   <td mat-cell *matCellDef="let element">
                     <mat-checkbox 
-                    [checked]="selectedItems.includes(element.id_equipo)" 
+                    [checked]="selectedItems.includes(element.idEquipo ?? element.id_equipo)"
                     (change)="onCheckboxChange(element, $event.checked)">
                   </mat-checkbox>
                   </td>
