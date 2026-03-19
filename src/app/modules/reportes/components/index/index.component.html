@@ -1,49 +1,99 @@
-<div style="display: block; width: 100%; height: 500px;">
-  <canvas
-    baseChart
-    [data]="barChartData"
-    [options]="barChartOptions"
-    [type]="barChartType"
-    (chartClick)="chartClicked($event)"
-    (chartHover)="chartHovered($event)"
-  >
-  </canvas>
-</div>
+<div class="reports-page">
+  <h2 class="reports-title">Reportes - Dashboard</h2>
 
-<div style="display: block; width: 100%; height: 500px;">
-  <canvas
-  baseChart
-  [data]="pieChartData"
-  [options]="pieChartOptions"
-  [type]="pieChartType"
-  (chartClick)="chartClicked($event)"
-  (chartHover)="chartHovered($event)"
->
-</canvas>
-</div>
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate" class="reports-progress"></mat-progress-bar>
+  }
 
-<mat-form-field class="example-form-field">
-  <mat-label>Enter a date range</mat-label>
-  <mat-date-range-input [rangePicker]="rangePicker">
-    <input matStartDate placeholder="Start date" />
-    <input matEndDate placeholder="End date" />
-  </mat-date-range-input>
-  <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
-  <mat-date-range-picker #rangePicker>
-    <mat-date-range-picker-actions>
-      <button mat-button matDateRangePickerCancel>Cancel</button>
-      <button mat-raised-button matDateRangePickerApply>Apply</button>
-    </mat-date-range-picker-actions>
-  </mat-date-range-picker>
-</mat-form-field>
-<div style="display: block; width: 100%; height: 500px;">
-  <canvas
-  baseChart
-  [data]="pieChartData"
-  [options]="pieChartOptions"
-  [type]="pieChartType"
-  (chartClick)="chartClicked($event)"
-  (chartHover)="chartHovered($event)"
->
-</canvas>
+  <div class="kpi-grid">
+    <mat-card class="kpi-card">
+      <mat-card-content>
+        <div class="kpi-card__body">
+          <div class="kpi-card__icon kpi-card__icon--blue">
+            <mat-icon>inventory_2</mat-icon>
+          </div>
+          <div>
+            <div class="kpi-card__value">{{ totalHardware() }}</div>
+            <div class="kpi-card__label">Hardware</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="kpi-card">
+      <mat-card-content>
+        <div class="kpi-card__body">
+          <div class="kpi-card__icon kpi-card__icon--green">
+            <mat-icon>swap_horiz</mat-icon>
+          </div>
+          <div>
+            <div class="kpi-card__value kpi-card__value--green">{{ totalPrestamos() }}</div>
+            <div class="kpi-card__label">Prestamos</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="kpi-card">
+      <mat-card-content>
+        <div class="kpi-card__body">
+          <div class="kpi-card__icon kpi-card__icon--purple">
+            <mat-icon>badge</mat-icon>
+          </div>
+          <div>
+            <div class="kpi-card__value kpi-card__value--purple">{{ totalCustodios() }}</div>
+            <div class="kpi-card__label">Custodios</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="kpi-card">
+      <mat-card-content>
+        <div class="kpi-card__body">
+          <div class="kpi-card__icon kpi-card__icon--orange">
+            <mat-icon>inventory</mat-icon>
+          </div>
+          <div>
+            <div class="kpi-card__value kpi-card__value--orange">{{ totalSuministros() }}</div>
+            <div class="kpi-card__label">Suministros</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="charts-grid">
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title>Inventario por Tipo</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas
+            baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="barChartType"
+          ></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title>Prestamos por Mes</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas
+            baseChart
+            [data]="doughnutChartData"
+            [options]="doughnutChartOptions"
+            [type]="doughnutChartType"
+          ></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
