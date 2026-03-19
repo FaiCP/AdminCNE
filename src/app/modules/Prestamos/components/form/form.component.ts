@@ -3,12 +3,14 @@ import { HttpService } from 'src/app/services/Http.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { GlobalModule } from 'src/app/modules/global/global.module';
 
 @Component({
     selector: 'app-form',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.scss'],
-    standalone: false
+    standalone: true,
+    imports: [GlobalModule]
 })
 export class FormComponent implements OnInit {
 
@@ -71,10 +73,18 @@ export class FormComponent implements OnInit {
     this.ObtenerElementos();
   }
 
+  private normalize(res: any): { items: any[]; total: number } {
+    const inner = res.datos ?? res.data ?? res;
+    return {
+      items: inner.elementos ?? inner.items ?? [],
+      total: inner.cantidadTotal ?? inner.totalCount ?? inner.total ?? 0,
+    };
+  }
+
   ObtenerCustodios() {
     this.HttpService.LeerTodo(50, this.numerPagina, this.textBusqueda, 'Custodios/LeerTodo')
       .subscribe((resOK: any) => {
-        this.custodios = resOK.datos.elementos;
+        this.custodios = this.normalize(resOK).items;
       },
       (respuestErr: any) => {
         this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
@@ -82,17 +92,19 @@ export class FormComponent implements OnInit {
   }
 
   onCustodioChange(custodioId: number): void {
-    const selectedCustodio = this.custodios.find(custodio => custodio.id === custodioId);
-
-    if (selectedCustodio) {
-      this.id_departamento = this.departamentos.find(dep => dep.nombre === selectedCustodio.departamento)?.id;
-    }
+    const selected = this.custodios.find(c => c.id === custodioId);
+    if (!selected) return;
+    const depNombre = selected.departamento;
+    const dep = this.departamentos.find(d =>
+      (d.nombre ?? d.name ?? '').toLowerCase() === (depNombre ?? '').toLowerCase()
+    );
+    if (dep) this.id_departamento = dep.id;
   }
 
-  ObtenerDepartamentos() {   
+  ObtenerDepartamentos() {
     this.HttpService.LeerTodo(50, this.numerPagina, this.textBusqueda, 'departamentos/LeerTodo')
       .subscribe((resOK: any) => {
-        this.departamentos = resOK.elementos;
+        this.departamentos = this.normalize(resOK).items;
       },
       (respuestErr: any) => {
         this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
@@ -102,9 +114,9 @@ export class FormComponent implements OnInit {
   ObtenerKits() {
     this.HttpService.LeerTodo(this.CantidadPagina, this.numerPagina, this.textBusqueda, 'Kits/LeerTodo')
       .subscribe((resOK: any) => {
-        this.dataSource1.data = resOK.datos.elementos;
-        this.cantidadTotalE = resOK.datos.cantidadTotal;
-        console.log(resOK)
+        const { items, total } = this.normalize(resOK);
+        this.dataSource1.data = items;
+        this.cantidadTotalE = total;
       },
       (respuestErr: any) => {
         this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
@@ -114,48 +126,42 @@ export class FormComponent implements OnInit {
   ObtenerHardwares() {
     this.HttpService.LeerTodo(this.CantidadPagina, this.numerPagina, this.textBusqueda, 'Hardware/LeerTodo')
       .subscribe((resOK: any) => {
-        this.dataSource.data = resOK.datos.elementos;
-        this.cantidadTotal = resOK.datos.cantidadTotal;     
+        const { items, total } = this.normalize(resOK);
+        this.dataSource.data = items;
+        this.cantidadTotal = total;
       },
       (respuestErr: any) => {
         this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
       });
   }
-ObtenerElementos() {
-  this.HttpService.LeerTodo(this.CantidadPagina, this.numerPagina, this.textBusqueda, 'GestionActivos/LeerTodo')
-    .subscribe((resOK: any) => {
-      this.dataSource2.data = resOK.datos.elementos;
-    },
-    (respuestErr: any) => {
-      this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
-    });
-}
 
- onCheckboxChange(element: any, isChecked: boolean): void {
-  const id_equipo = element.id_equipo;
-  const equipo = this.dataSource.data.find((e: any) => e.id_equipo === id_equipo);
-
-  let estaPrestado = !!equipo?.nombreCustodio1?.trim();
-  
-  console.log(`Custodio actual: "${equipo?.nombreCustodio1}"`);
-  console.log('Checkbox:', isChecked, 'Equipo:', equipo);
-  console.log('¿Está prestado?', estaPrestado);
-
-  if (isChecked) {
-    if (estaPrestado) {
-      this.toastr.warning(`El equipo con ID ${id_equipo} ya se encuentra prestado.`, 'Advertencia');
-      return;
-    }
-
-    if (!this.selectedItems.includes(id_equipo)) {
-      this.selectedItems.push(id_equipo);
-    }
-  } else {
-    this.selectedItems = this.selectedItems.filter(id => id !== id_equipo);
+  ObtenerElementos() {
+    this.HttpService.LeerTodo(this.CantidadPagina, this.numerPagina, this.textBusqueda, 'GestionActivos/LeerTodo')
+      .subscribe((resOK: any) => {
+        this.dataSource2.data = this.normalize(resOK).items;
+      },
+      (respuestErr: any) => {
+        this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
+      });
   }
 
-  console.log('IDs seleccionados:', this.selectedItems);
-}
+  onCheckboxChange(element: any, isChecked: boolean): void {
+    const idEquipo = element.idEquipo ?? element.id_equipo;
+    const equipo = this.dataSource.data.find((e: any) => (e.idEquipo ?? e.id_equipo) === idEquipo);
+    const estaPrestado = !!( equipo?.nombreCustodio ?? equipo?.nombreCustodio1 )?.trim();
+
+    if (isChecked) {
+      if (estaPrestado) {
+        this.toastr.warning(`El equipo ${idEquipo} ya se encuentra prestado.`, 'Advertencia');
+        return;
+      }
+      if (!this.selectedItems.includes(idEquipo)) {
+        this.selectedItems.push(idEquipo);
+      }
+    } else {
+      this.selectedItems = this.selectedItems.filter(id => id !== idEquipo);
+    }
+  }
 
   cambiarPagina(event:any)
   {

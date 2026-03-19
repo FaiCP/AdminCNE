@@ -1,9 +1,11 @@
-table {
-  width: 100%;
+// Inventario-specific overrides — shared styles in src/styles/_components.scss
+
+// Tab group background
+.mat-mdc-tab-group {
+  background: var(--cne-surface-bg);
 }
-.mat-tab-group{
-  background-color:#000000;
-}
-.mat-toolbar{
-  background-color:#000000;
+
+.mat-mdc-tab-header {
+  background: var(--cne-surface-card);
+  border-bottom: 2px solid var(--cne-border-default);
 }

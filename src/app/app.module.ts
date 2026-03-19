@@ -9,8 +9,10 @@ import { AppComponent } from './app.component';
 import { GlobalModule } from './modules/global/global.module';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { authInterceptor } from './core/auth/auth.interceptor';
+import { errorInterceptor } from './core/auth/error.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +26,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
     CarouselModule.forRoot(), // Configuración de ngx-bootstrap
   ],
   providers: [
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
     provideCharts(withDefaultRegisterables()),
   ],
 

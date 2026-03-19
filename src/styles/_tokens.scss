@@ -1,0 +1,119 @@
+// ============================================================
+// _tokens.scss -- AdminCNE Design System Tokens v2.0
+// ============================================================
+
+:root {
+  // ---- COLOR: Primary (Azul institucional) ----
+  --cne-primary-50:  #E8EAF6;
+  --cne-primary-100: #C5CAE9;
+  --cne-primary-200: #9FA8DA;
+  --cne-primary-300: #7986CB;
+  --cne-primary-400: #5C6BC0;
+  --cne-primary-500: #1B3A5C;
+  --cne-primary-600: #153049;
+  --cne-primary-700: #0F2536;
+  --cne-primary-800: #0A1B28;
+  --cne-primary-900: #05101A;
+
+  // ---- COLOR: Accent (Dorado institucional) ----
+  --cne-accent-50:  #FFF3E0;
+  --cne-accent-100: #FFE0B2;
+  --cne-accent-200: #FFCC80;
+  --cne-accent-300: #FFB74D;
+  --cne-accent-400: #FFA726;
+  --cne-accent-500: #D4880F;
+  --cne-accent-600: #B8750D;
+  --cne-accent-700: #9C620A;
+
+  // ---- COLOR: Semanticos ----
+  --cne-success-50:  #E8F5E9;
+  --cne-success-500: #2E7D32;
+  --cne-success-700: #1B5E20;
+
+  --cne-warning-50:  #FFF3E0;
+  --cne-warning-500: #E65100;
+  --cne-warning-700: #BF360C;
+
+  --cne-error-50:  #FFEBEE;
+  --cne-error-500: #C62828;
+  --cne-error-700: #B71C1C;
+
+  --cne-info-50:  #E1F5FE;
+  --cne-info-500: #0277BD;
+  --cne-info-700: #01579B;
+
+  // ---- COLOR: Superficies y Neutros ----
+  --cne-surface-bg:       #F5F7FA;
+  --cne-surface-card:     #FFFFFF;
+  --cne-surface-elevated: #FFFFFF;
+  --cne-surface-sidebar:  #0F2536;
+
+  --cne-border-default: #E0E0E0;
+  --cne-border-strong:  #BDBDBD;
+
+  --cne-text-primary:    #1A1A2E;
+  --cne-text-secondary:  #5A6070;
+  --cne-text-tertiary:   #8C919A;
+  --cne-text-inverse:    #FFFFFF;
+  --cne-text-on-primary: #FFFFFF;
+
+  // ---- TYPOGRAPHY ----
+  --cne-font-sans:  'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --cne-font-mono:  'JetBrains Mono', 'Cascadia Code', monospace;
+
+  --cne-text-3xl:  2rem;
+  --cne-text-2xl:  1.5rem;
+  --cne-text-xl:   1.25rem;
+  --cne-text-lg:   1.125rem;
+  --cne-text-base: 1rem;
+  --cne-text-sm:   0.875rem;
+  --cne-text-xs:   0.75rem;
+
+  --cne-weight-regular:  400;
+  --cne-weight-medium:   500;
+  --cne-weight-semibold: 600;
+  --cne-weight-bold:     700;
+
+  // ---- SPACING (base 4px) ----
+  --cne-space-1:   4px;
+  --cne-space-2:   8px;
+  --cne-space-3:   12px;
+  --cne-space-4:   16px;
+  --cne-space-5:   20px;
+  --cne-space-6:   24px;
+  --cne-space-8:   32px;
+  --cne-space-10:  40px;
+  --cne-space-12:  48px;
+  --cne-space-16:  64px;
+
+  // ---- BORDER RADIUS ----
+  --cne-radius-sm:   4px;
+  --cne-radius-md:   8px;
+  --cne-radius-lg:   12px;
+  --cne-radius-xl:   16px;
+  --cne-radius-full: 9999px;
+
+  // ---- SHADOWS ----
+  --cne-shadow-xs:    0 1px 2px rgba(0,0,0,0.05);
+  --cne-shadow-sm:    0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --cne-shadow-md:    0 4px 6px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.06);
+  --cne-shadow-lg:    0 10px 15px rgba(0,0,0,0.05), 0 4px 6px rgba(0,0,0,0.05);
+  --cne-shadow-modal: 0 20px 60px rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.1);
+
+  // ---- TRANSITIONS ----
+  --cne-transition-fast:   150ms cubic-bezier(0.4,0,0.2,1);
+  --cne-transition-normal: 250ms cubic-bezier(0.4,0,0.2,1);
+  --cne-transition-slow:   350ms cubic-bezier(0.4,0,0.2,1);
+
+  // ---- LAYOUT ----
+  --cne-sidebar-width:     260px;
+  --cne-sidebar-collapsed: 72px;
+  --cne-topbar-height:     64px;
+  --cne-content-padding:   24px;
+
+  // ---- Z-INDEX ----
+  --cne-z-sidebar:  1200;
+  --cne-z-topbar:   1100;
+  --cne-z-modal:    1400;
+  --cne-z-toast:    1700;
+}

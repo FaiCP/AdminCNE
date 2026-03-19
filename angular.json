@@ -28,8 +28,9 @@
             "inlineStyleLanguage": "scss",
             "styles": [
               "./node_modules/ngx-toastr/toastr.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "./node_modules/@angular/material/prebuilt-themes/purple-green.css"
+              "src/tailwind.css",
+              "src/styles.scss",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
             ],
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.js"
@@ -37,7 +38,8 @@
             "browser": "src/main.ts",
             "stylePreprocessorOptions": {
               "includePaths": [
-                "."
+                ".",
+                "src"
               ]
             }
           },
@@ -109,7 +111,7 @@
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []

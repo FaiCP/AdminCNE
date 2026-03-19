@@ -1,27 +1,119 @@
-<mat-toolbar color="primary">
-  <button routerLink="/home/index" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>home</mat-icon>
-  </button>
-  <span>TICS</span>
-  
-  <span *ngIf="userName" class="example-spacer" ></span>
-  <small>{{ userName }}</small>
+<!-- Sidebar Overlay (mobile) -->
+<div
+  class="sidebar-overlay"
+  [class.active]="!sidebarCollapsed && isMobile"
+  (click)="toggleSidebar()">
+</div>
 
-  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="User menu">
-    <mat-icon>person</mat-icon>
+<!-- SIDEBAR -->
+<nav
+  class="cne-sidebar"
+  [class.collapsed]="sidebarCollapsed"
+  aria-label="Menu principal">
+
+  <!-- Sidebar Header -->
+  <div class="cne-sidebar__header">
+    <div class="cne-sidebar__brand">
+      <span class="brand-icon material-icons">how_to_vote</span>
+      <span class="brand-text">AdminCNE</span>
+    </div>
+  </div>
+
+  <!-- Sidebar Nav -->
+  <div class="cne-sidebar__nav">
+
+    <!-- Group: Principal -->
+    <div class="nav-group">
+      <span class="nav-group__label">Principal</span>
+      <a class="nav-item" routerLink="/home/index" routerLinkActive="active" (click)="closeMobileSidebar()">
+        <span class="material-icons nav-item__icon">dashboard</span>
+        <span class="nav-item__label">Dashboard</span>
+      </a>
+      <a class="nav-item" routerLink="/inventario/index" routerLinkActive="active" (click)="closeMobileSidebar()">
+        <span class="material-icons nav-item__icon">inventory_2</span>
+        <span class="nav-item__label">Inventario</span>
+      </a>
+      <a class="nav-item" routerLink="/prestamos/index" routerLinkActive="active" (click)="closeMobileSidebar()">
+        <span class="material-icons nav-item__icon">swap_horiz</span>
+        <span class="nav-item__label">Préstamos</span>
+      </a>
+    </div>
+
+    <!-- Group: Gestión -->
+    <div class="nav-group">
+      <span class="nav-group__label">Gestión</span>
+      <a class="nav-item" routerLink="/personal/index" routerLinkActive="active" (click)="closeMobileSidebar()">
+        <span class="material-icons nav-item__icon">people</span>
+        <span class="nav-item__label">Personal</span>
+      </a>
+      <a class="nav-item" routerLink="/custodio/index" routerLinkActive="active" (click)="closeMobileSidebar()">
+        <span class="material-icons nav-item__icon">badge</span>
+        <span class="nav-item__label">Custodios</span>
+      </a>
+      <a class="nav-item" routerLink="/suministros/index" routerLinkActive="active" (click)="closeMobileSidebar()">
+        <span class="material-icons nav-item__icon">category</span>
+        <span class="nav-item__label">Suministros</span>
+      </a>
+    </div>
+
+    <!-- Group: Reportes -->
+    <div class="nav-group">
+      <span class="nav-group__label">Reportes</span>
+      <a class="nav-item" routerLink="/historial/index" routerLinkActive="active" (click)="closeMobileSidebar()">
+        <span class="material-icons nav-item__icon">history</span>
+        <span class="nav-item__label">Historial</span>
+      </a>
+      <a class="nav-item" routerLink="/reportes/index" routerLinkActive="active" (click)="closeMobileSidebar()">
+        <span class="material-icons nav-item__icon">assessment</span>
+        <span class="nav-item__label">Reportes</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Sidebar Footer -->
+  <div class="cne-sidebar__footer">
+    <button
+      class="sidebar-toggle-btn"
+      (click)="toggleSidebar()"
+      [attr.aria-label]="sidebarCollapsed ? 'Expandir menú' : 'Colapsar menú'">
+      <span class="material-icons">{{ sidebarCollapsed ? 'chevron_right' : 'chevron_left' }}</span>
+    </button>
+    <span class="version-label">v2.0</span>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header class="cne-topbar" [class.sidebar-expanded]="!sidebarCollapsed">
+  <button class="topbar-hamburger" (click)="toggleSidebar()" aria-label="Toggle menu">
+    <span class="material-icons">menu</span>
   </button>
-  
-  <mat-menu #menu="matMenu">
+
+  <div class="topbar-breadcrumb">
+    <span class="breadcrumb-item">AdminCNE</span>
+  </div>
+
+  <div class="topbar-spacer"></div>
+
+  <div class="topbar-actions">
+    <span class="topbar-username" *ngIf="userName">{{ userName }}</span>
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="Menú de usuario" class="topbar-avatar-btn">
+      <span class="material-icons">account_circle</span>
+    </button>
+  </div>
+
+  <mat-menu #userMenu="matMenu">
     <button mat-menu-item routerLink="login/index">
-      <mat-icon>input</mat-icon>
-      <span>Iniciar sesión</span>
+      <span class="material-icons" style="margin-right:8px;vertical-align:middle">login</span>
+      Iniciar sesión
     </button>
     <button mat-menu-item (click)="onLogout()">
-      <mat-icon>logoutn</mat-icon>
-      <span>Cerrar sesriòn</span>
+      <span class="material-icons" style="margin-right:8px;vertical-align:middle">logout</span>
+      Cerrar sesión
     </button>
-    
   </mat-menu>
-</mat-toolbar>
+</header>
 
-<router-outlet></router-outlet>
+<!-- MAIN CONTENT -->
+<main class="cne-main" [class.sidebar-expanded]="!sidebarCollapsed">
+  <router-outlet></router-outlet>
+</main>

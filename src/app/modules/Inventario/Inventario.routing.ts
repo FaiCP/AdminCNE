@@ -5,7 +5,6 @@ export const inventarioRoutes : Routes =[
   {
     path: 'inventario/index',
     component:IndexComponent,
-    loadChildren: () => import('./Inventario.module').then(m => m.InventarioModule),
   }
 
 ];

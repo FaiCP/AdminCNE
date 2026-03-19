@@ -5,7 +5,6 @@ import { IndexComponent } from "./components/index/index.component";
   {
     path:'suministros/index',
     component:IndexComponent,
-    loadChildren:()=>import('./Suministros.module').then(m =>  m.SuministrosModule)
   }
 
 ];

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { HttpService } from 'src/app/services/Http.service';
+import { GlobalModule } from 'src/app/modules/global/global.module';
 
 @Component({
     selector: 'app-form',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.scss'],
-    standalone: false
+    standalone: true,
+    imports: [GlobalModule]
 })
 export class FormComponent implements OnInit {
 
@@ -44,21 +46,22 @@ departamentos: any;
       });
   }
 
+  private normalize(res: any): any[] {
+    const inner = res.datos ?? res.data ?? res;
+    return inner.elementos ?? inner.items ?? [];
+  }
+
   ObtenerDepartamentos() {
-    
-    this.HttpService.LeerTodo(50, this.numerPagina, this.textBusqueda, 'departamentos')
+    this.HttpService.LeerTodo(50, this.numerPagina, this.textBusqueda, 'Departamentos/LeerTodo')
       .subscribe((resOK: any) => {
-        this.departamentos = resOK.datos.elementos;
+        this.departamentos = this.normalize(resOK);
       },
       (respuestErr: any) => {
         this.toastr.error(respuestErr?.error?.mensajes?.join(','), 'Error');
       });
   }
 
-  onCustodioChange(departamentoID: number): void {
-    const selectedepartamento = this.departamentos.find((dep: { id_departamento: number; }) => dep.id_departamento === departamentoID);
-
-  }
+  onCustodioChange(_departamentoId: number): void { }
 
   onRegister(){
     this.Post(this.Cutodios);

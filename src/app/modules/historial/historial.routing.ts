@@ -5,7 +5,6 @@ import { IndexComponent } from "./components/index/index.component";
   {
     path:'historial/index',
     component:IndexComponent,
-    loadChildren:()=>import('./historial.module').then(m =>  m.HistorialModule)
   }
 
 ];

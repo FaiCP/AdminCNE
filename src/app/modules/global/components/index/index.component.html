@@ -1,15 +1,30 @@
-<div class="app-panel-container">
-  <div class="container">
-    <div class="row">
-      <div class="col-6 col-sm-4 col-md-3 col-lg-2 p-2 "*ngFor="let menu of item">        
-        <mat-card *ngIf="isAuthenticated" [routerLink]="menu.link">
-          <mat-icon>{{ menu.icon }}</mat-icon>
-          <p>{{ menu.label }}</p>
-        </mat-card>        
-      </div>
+<div class="dashboard-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">Bienvenido al panel de administración del CNE</p>
     </div>
   </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid" *ngIf="isAuthenticated">
+    <a class="kpi-card" *ngFor="let menu of item" [routerLink]="menu.link">
+      <div class="kpi-card__icon-wrapper" [ngClass]="'kpi-card__icon-wrapper--' + menu.color">
+        <span class="material-icons">{{ menu.icon }}</span>
+      </div>
+      <span class="kpi-card__label">{{ menu.label }}</span>
+      <span class="material-icons kpi-card__arrow">arrow_forward</span>
+    </a>
+  </div>
+
+  <!-- Not authenticated message -->
+  <div class="auth-prompt" *ngIf="!isAuthenticated">
+    <span class="material-icons auth-prompt__icon">lock</span>
+    <h2>Sesión requerida</h2>
+    <p>Debes iniciar sesión para acceder al sistema.</p>
+    <a routerLink="/login/index" class="cne-btn cne-btn--primary cne-btn--lg">
+      Iniciar sesión
+    </a>
+  </div>
 </div>
-<p>Estoy en index home</p>
-<p>¿Autenticado? {{ authService.isAuthenticated() }}</p>
-<p>¿Usuario? {{ authService.getUserName() }}</p>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed-variant": "#5241a0",
+              "surface-variant": "#23252f",
+              "on-secondary": "#280f75",
+              "on-error": "#490006",
+              "surface-container": "#171922",
+              "outline": "#74757e",
+              "primary-container": "#6C63FF",
+              "on-surface": "#e7e7f1",
+              "secondary-fixed": "#d5cbff",
+              "surface-container-lowest": "#000000",
+              "tertiary-container": "#34b5fa",
+              "on-error-container": "#ffa8a3",
+              "primary": "#a8a4ff",
+              "on-tertiary-container": "#003047",
+              "tertiary": "#61c2ff",
+              "surface-bright": "#292c36",
+              "on-primary-fixed-variant": "#483795",
+              "background": "#0c0e15",
+              "tertiary-fixed": "#40bbff",
+              "secondary-container": "#483795",
+              "tertiary-fixed-dim": "#25adf1",
+              "on-background": "#e7e7f1",
+              "inverse-on-surface": "#53555d",
+              "inverse-surface": "#faf8ff",
+              "on-primary": "#000000",
+              "surface-container-low": "#11131b",
+              "on-surface-variant": "#aaaab4",
+              "error": "#ff716c",
+              "primary-fixed-dim": "#a8a4ff",
+              "on-tertiary-fixed-variant": "#003d5a",
+              "on-secondary-fixed": "#352182",
+              "surface-container-high": "#1d1f28",
+              "surface": "#0c0e15",
+              "error-dim": "#d7383b",
+              "tertiary-dim": "#17a8ec",
+              "on-secondary-container": "#d3caff",
+              "primary-dim": "#a8a4ff",
+              "secondary-fixed-dim": "#c7bbff",
+              "on-primary-fixed": "#352182",
+              "secondary-dim": "#a090f4",
+              "surface-tint": "#a8a4ff",
+              "error-container": "#9f0519",
+              "surface-dim": "#0c0e15",
+              "surface-container-highest": "#23252f",
+              "on-tertiary-fixed": "#001a29",
+              "primary-fixed": "#a8a4ff",
+              "secondary": "#a898fd",
+              "on-tertiary": "#003b56",
+              "on-primary-container": "#e7e7f1",
+              "outline-variant": "#464850",
+              "inverse-primary": "#483795"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(17, 19, 34, 0.85);
+            backdrop-filter: blur(24px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(168, 164, 255, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(168, 164, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30 overflow-hidden">
+<!-- Blurred Background Content (Simulating Assets Page) -->
+<div class="fixed inset-0 z-0 flex blur-md saturate-50 brightness-[0.2]">
+<!-- SideNavBar (Styling from COMPONENTS_11) -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-[#11131b] border-r border-outline-variant/10 flex flex-col pt-20 pb-8 px-4 gap-y-2 z-40">
+<nav class="flex-1 space-y-1">
+<div class="text-[#aaaab4] flex items-center gap-3 px-4 py-3"><span class="material-symbols-outlined">dashboard</span>Dashboard</div>
+<div class="bg-gradient-to-br from-[#a8a4ff] to-[#9994ff] text-[#0c0e15] rounded-lg shadow-[0_0_15px_rgba(168,164,255,0.2)] flex items-center gap-3 px-4 py-3"><span class="material-symbols-outlined">inventory_2</span>Assets</div>
+<div class="text-[#aaaab4] flex items-center gap-3 px-4 py-3"><span class="material-symbols-outlined">handshake</span>Loans</div>
+</nav>
+</aside>
+<main class="flex-1 ml-64 p-10 space-y-8">
+<div>
+<h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Asset Inventory</h1>
+</div>
+<div class="grid grid-cols-4 gap-6">
+<div class="h-32 bg-surface-container rounded-lg"></div>
+<div class="h-32 bg-surface-container rounded-lg"></div>
+<div class="h-32 bg-surface-container rounded-lg"></div>
+<div class="h-32 bg-surface-container rounded-lg"></div>
+</div>
+<div class="bg-surface-container rounded-lg h-[600px] w-full"></div>
+</main>
+</div>
+<!-- TopNavBar (Styling from COMPONENTS_11) -->
+<header class="fixed top-0 w-full flex justify-between items-center px-6 h-16 bg-[#0c0e15]/80 backdrop-blur-xl z-50 shadow-[0_12px_40px_rgba(0,0,0,0.06)]">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-tight text-[#a8a4ff] font-headline">TICS</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-[#a8a4ff] font-semibold" href="#">Loans</a>
+<a class="text-[#aaaab4] hover:text-[#e7e7f1] transition-all duration-300" href="#">Assets</a>
+<a class="text-[#aaaab4] hover:text-[#e7e7f1] transition-all duration-300" href="#">Kits</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#aaaab4] hover:bg-[#1d1f28] hover:text-[#e7e7f1] rounded-full transition-all duration-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-[#aaaab4] hover:bg-[#1d1f28] hover:text-[#e7e7f1] rounded-full transition-all duration-300">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center overflow-hidden">
+<img alt="ING. Jefferson Ismael Lopez Silva" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdCXo5t6vlGQtvt793y0VzbC_TG9DdbjA04XW-E_hZEQlCvsYu8Qt_NKAkjmFsMeydYm4GEaZsLIRKrjBfrWPyPoN0PgagAVuRkXpz3IT7XHoYOzkB1Y7vcz8Dqb_yAcNMnYqfxUuI9hx2-qn0hMR7faEN6EDaAulyydg-wjkRHxX_FqJ9bPvAOMcTVgVcFNnRvxzZhf7rkXKbkWE1ED434uTbtiI66iJ-53nrPjaYIjnxTai9tkeXXHh2yftocbPh1hb-nBuY45bx"/>
+</div>
+</div>
+</header>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+<!-- Loan Modal Container (TICS Midnight style) -->
+<div class="w-full max-w-4xl glass-panel rounded-xl shadow-2xl border border-outline-variant/10 flex flex-col max-h-[90vh]">
+<!-- Modal Header -->
+<div class="p-8 flex justify-between items-start">
+<div>
+<h2 class="text-3xl font-headline font-bold text-on-surface tracking-tight">Crear Nuevo Préstamo</h2>
+<p class="text-on-surface-variant text-sm mt-1">Asigne activos a personal autorizado dentro del sistema.</p>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-size: 28px;">close</span>
+</button>
+</div>
+<!-- Tab Navigation -->
+<div class="px-8 flex gap-8 border-b border-outline-variant/10">
+<button class="pb-4 text-sm font-bold tracking-widest uppercase font-headline text-primary border-b-2 border-primary">Inventario</button>
+<button class="pb-4 text-sm font-bold tracking-widest uppercase font-headline text-on-surface-variant hover:text-on-surface transition-colors">Kits</button>
+</div>
+<!-- Modal Body (Scrollable) -->
+<div class="p-8 space-y-8 overflow-y-auto custom-scrollbar">
+<!-- Input Row: Selectors -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant font-label">Custodio <span class="text-error">*</span></label>
+<div class="relative">
+<select class="w-full bg-surface-container-high border border-outline-variant/20 rounded-lg py-3 px-4 text-on-surface appearance-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all cursor-pointer">
+<option>Seleccionar Custodio...</option>
+<option>Ing. Jefferson Lopez</option>
+<option>Lic. Maria Fernanda</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant font-label">Departamento <span class="text-error">*</span></label>
+<div class="relative">
+<select class="w-full bg-surface-container-high border border-outline-variant/20 rounded-lg py-3 px-4 text-on-surface appearance-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all cursor-pointer">
+<option>Seleccionar Departamento...</option>
+<option>Infraestructura TICS</option>
+<option>Soporte Técnico</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Filter & Search Section -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-headline font-bold text-on-surface">Selección de Activos</h3>
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-high border border-outline-variant/20 rounded-full py-2 pl-10 pr-4 text-sm text-on-surface focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all" placeholder="Filtrar activos..." type="text"/>
+</div>
+</div>
+<!-- Asset Selection Table -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/10">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/60 border-b border-outline-variant/10">
+<th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant font-label">
+<input class="rounded w-4 h-4 bg-surface-container-highest border-outline-variant text-primary focus:ring-primary/40 focus:ring-offset-background" type="checkbox"/>
+</th>
+<th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant font-label">Device</th>
+<th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant font-label">Brand</th>
+<th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant font-label">Model</th>
+<th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant font-label">Serial</th>
+<th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant font-label">Active #</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<tr class="hover:bg-primary/5 border-b border-outline-variant/5 transition-colors group">
+<td class="px-6 py-4"><input checked="" class="rounded w-4 h-4 bg-surface-container-highest border-outline-variant text-primary focus:ring-primary/40 focus:ring-offset-background" type="checkbox"/></td>
+<td class="px-6 py-4 text-on-surface font-medium">MacBook Pro M2</td>
+<td class="px-6 py-4 text-on-surface-variant">Apple</td>
+<td class="px-6 py-4 text-on-surface-variant">A2779</td>
+<td class="px-6 py-4 font-mono text-xs text-on-surface-variant">C02FX1...</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-md">#44521</span>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 border-b border-outline-variant/5 transition-colors group">
+<td class="px-6 py-4"><input class="rounded w-4 h-4 bg-surface-container-highest border-outline-variant text-primary focus:ring-primary/40 focus:ring-offset-background" type="checkbox"/></td>
+<td class="px-6 py-4 text-on-surface font-medium">Dell Precision 5570</td>
+<td class="px-6 py-4 text-on-surface-variant">Dell</td>
+<td class="px-6 py-4 text-on-surface-variant">P117F</td>
+<td class="px-6 py-4 font-mono text-xs text-on-surface-variant">5X2K1...</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-md">#11209</span>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4"><input class="rounded w-4 h-4 bg-surface-container-highest border-outline-variant text-primary focus:ring-primary/40 focus:ring-offset-background" type="checkbox"/></td>
+<td class="px-6 py-4 text-on-surface font-medium">ThinkPad X1 Carbon</td>
+<td class="px-6 py-4 text-on-surface-variant">Lenovo</td>
+<td class="px-6 py-4 text-on-surface-variant">Gen 10</td>
+<td class="px-6 py-4 font-mono text-xs text-on-surface-variant">PF2L9...</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-md">#88390</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between pt-2">
+<p class="text-[11px] text-on-surface-variant uppercase tracking-wider font-label">Mostrando 3 de 142 activos</p>
+<div class="flex gap-1">
+<button class="p-1 hover:bg-surface-container-high rounded text-on-surface-variant disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="px-2 py-1 bg-primary/20 text-primary text-xs font-bold rounded">1</button>
+<button class="px-2 py-1 hover:bg-surface-container-high text-on-surface-variant text-xs font-bold rounded">2</button>
+<button class="px-2 py-1 hover:bg-surface-container-high text-on-surface-variant text-xs font-bold rounded">3</button>
+<button class="p-1 hover:bg-surface-container-high rounded text-on-surface-variant">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="p-8 mt-auto flex justify-end items-center gap-6 border-t border-outline-variant/10">
+<button class="text-sm font-bold tracking-wide text-on-surface-variant hover:text-primary transition-all">
+                Cerrar
+            </button>
+<button class="px-10 py-3 bg-gradient-to-br from-[#a8a4ff] to-[#6C63FF] text-[#0c0e15] text-sm font-extrabold uppercase tracking-widest rounded-lg shadow-[0_8px_30px_rgba(108,99,255,0.3)] hover:scale-[1.02] active:scale-95 transition-all">
+                Crear Préstamo
+            </button>
+</div>
+</div>
+</div>
+</body></html>

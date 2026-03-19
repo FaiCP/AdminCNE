@@ -1,10 +1,63 @@
-/* You can add global styles to this file, and also import other style files */
-/* Importing Bootstrap SCSS file. */
 @use "./node_modules/bootstrap/scss/bootstrap";
-
-/* Importing Datepicker SCSS file. */
 @use "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@use "styles/tokens";
+@use "styles/mixins";
+@use "styles/components";
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--cne-font-sans);
+  background-color: var(--cne-surface-bg);
+  color: var(--cne-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--cne-primary-500);
+  outline-offset: 2px;
+}
+
+// Override Angular Material theme colors
+.mat-mdc-button.mat-primary,
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary {
+  --mdc-filled-button-container-color: var(--cne-primary-500);
+}
+
+// Skeleton loader animation
+.cne-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--cne-border-default) 0%,
+    #f0f0f0 50%,
+    var(--cne-border-default) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  border-radius: var(--cne-radius-md);
+}
+
+@keyframes skeleton-pulse {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

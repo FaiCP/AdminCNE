@@ -1,38 +1,56 @@
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, HostListener, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-    selector: 'app-menu-global',
-    templateUrl: './menu-global.component.html',
-    styleUrls: ['./menu-global.component.scss'],
-    standalone: false
+  selector: 'app-menu-global',
+  templateUrl: './menu-global.component.html',
+  styleUrls: ['./menu-global.component.scss'],
+  standalone: false
 })
 export class MenuGlobalComponent implements OnInit {
-  userName: string | null = null;
-  private userNameSubscription: Subscription = new Subscription();
+  // Signal expuesto directamente al template
+  protected authService = inject(AuthService);
+  private router = inject(Router);
 
-  constructor(private authService: AuthService,private router:Router ) {}
+  sidebarCollapsed = false;
+  isMobile = false;
+
+  // Getter para el template: lee el signal
+  get userName(): string | null {
+    return this.authService.userName();
+  }
 
   ngOnInit(): void {
-    this.userNameSubscription = this.authService.getUserName().subscribe(userName => {
-      this.userName = userName;
-    });
+    this.checkScreenSize();
+  }
 
-    if (this.authService.isAuthenticated()) {
-      this.userName = localStorage.getItem('userName');
+  @HostListener('window:resize')
+  onResize(): void {
+    this.checkScreenSize();
+  }
+
+  toggleSidebar(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+  closeMobileSidebar(): void {
+    if (this.isMobile) {
+      this.sidebarCollapsed = true;
     }
   }
 
-  ngOnDestroy(): void {
-    this.userNameSubscription.unsubscribe();
-  }
-
   onLogout(): void {
-    this.authService.logout(); 
-    this.userName = null; 
-    this.router.navigate(['/']); 
+    this.authService.logout();
+    this.router.navigate(['/login/index']);
   }
 
+  private checkScreenSize(): void {
+    this.isMobile = window.innerWidth < 768;
+    if (this.isMobile || window.innerWidth <= 1024) {
+      this.sidebarCollapsed = true;
+    } else {
+      this.sidebarCollapsed = false;
+    }
+  }
 }
